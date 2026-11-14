@@ -97,6 +97,19 @@ describe('KSS rules', () => {
     expect(sleepy).not.toContain('kss-mismatch');
   });
 
+  it('the "Feels fine, reacts slow" scenario raises the mismatch for its target crew member only', () => {
+    const s: MissionSettings = { ...base, scenario: 'masked' };
+    const crew = simulateCrew(s);
+    const target = CREW.findIndex((c) => c.id === 'fe2');
+    const ev = evaluate(crew[target], s);
+    const ids = ev.findings.map((f) => f.id.split(':').pop());
+    expect(ids).toContain('kss-mismatch');
+    expect(ids).not.toContain('kss-high');
+    crew.forEach((m, i) => {
+      if (i !== target) expect(evaluate(m, s).findings.map((f) => f.id.split(':').pop())).not.toContain('kss-mismatch');
+    });
+  });
+
   it('neither rule fires on a nominal day', () => {
     const m = cdr();
     const k = keys(withToday(m, { kss: 3, ...nominalPvt(m) }));

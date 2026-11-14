@@ -15,7 +15,7 @@ export interface RoutineTask {
 /** Daily prompts. Times follow a typical crew day; the flight surgeon adjusts them per mission. */
 export function routineFor(env: Environment): RoutineTask[] {
   const base: RoutineTask[] = [
-    { id: PVT_TASK_ID, time: '06:15', label: 'Reaction self-test after waking', why: 'Catches sleep loss before it shows in how you feel.', view: 'pvt' },
+    { id: PVT_TASK_ID, time: '06:15', label: 'Reaction self-test after waking', why: 'Can flag sleep loss before it shows in how you feel.', view: 'pvt' },
     { id: 'vitals', time: '06:30', label: 'Vitals: blood pressure, SpO2, temperature, fasting glucose', why: 'Same time each day keeps readings comparable.', view: 'checkin' },
     { id: 'checkin', time: '06:40', label: 'Daily check-in: sleep, mood, stress, symptoms', why: 'Builds the baseline the alerts depend on.', view: 'checkin' },
     { id: 'water', time: '09:00', label: 'Hydration check: 2 L target by end of day', why: 'Fluid shifts and dry cabin air both push toward dehydration.' },

@@ -11,7 +11,7 @@ Three users, with different needs:
   a symptom so they do not look unfit. Cares about privacy, especially for mood.
 - **The crew medical officer.** A crewmate with extra medical training, not a doctor. Needs to see the whole
   crew and know when to escalate.
-- **The flight surgeon on Earth.** Reads a downlink hours later on a Mars transit. Needs the day's values and
+- **The flight surgeon on Earth.** Reads a downlink minutes later at best, and up to 24 minutes later at Mars' farthest. Needs the day's values and
   every flag in one message, not a chat.
 
 Sources we drew on: astronaut memoirs and interviews (Hadfield, Kelly), NASA Human Research Program pages,
@@ -49,7 +49,7 @@ Ideas we generated, then sorted by impact and feasibility:
 ## 4. Prototype
 
 Paper sketches, then this app: a clickable build on simulated sensor data with a deterministic simulator and
-four scenarios. The intended live source is the Bio-Monitor (Astroskin) shirt flying on the ISS since 2019,
+five scenarios. The intended live source is the Bio-Monitor (Astroskin) shirt flying on the ISS since 2019,
 which covers ECG and heart rate, heart rate variability, breathing rate, SpO2, skin temperature, activity and
 sleep from one garment over Bluetooth. Cuff, glucose meter and dosimeter readings are typed or imported.
 
@@ -57,7 +57,7 @@ sleep from one garment over Bluetooth. Cuff, glucose meter and dosimeter reading
 
 - Task tests: "you just got an alert; find out why and what to do" on desktop and phone.
 - Keyboard-only navigation, dark and light themes, offline reload.
-- A rule-by-rule test suite (34 tests) that checks every published cut-off and the scenarios.
+- A rule-by-rule test suite (242 tests across 16 files) that checks every published cut-off, the scenarios and the screen logic.
 - Each round changed the wording. Status labels went from "Nominal / Watch / Act now" to "Normal for you /
   Keep an eye on it / Needs action", and every tile gained a plain sentence about the person's own baseline.
 

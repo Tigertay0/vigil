@@ -1,5 +1,6 @@
 import { CREW } from '../data/crew';
 import { ENVIRONMENTS, INDICATORS, indicatorById } from '../data/indicators';
+import { MSL_RAD_SPE_2012 } from '../data/radEvent';
 import { gaussian, hashString, mulberry32 } from './prng';
 import type { CrewMember, DayRecord, IndicatorId, MissionSettings, ScenarioId } from './types';
 
@@ -48,7 +49,7 @@ export const SCENARIOS: ScenarioDef[] = [
   {
     id: 'spe',
     label: 'Solar particle event',
-    blurb: 'A solar storm raises the daily dose for the whole crew for four days. Shelter and EVA rules kick in.',
+    blurb: 'A solar storm raises the daily dose for the whole crew for four days. The doses replay NASA MSL/RAD measurements of the 7 to 10 March 2012 solar particle event on the cruise to Mars (estimated dose equivalent). Shelter and EVA rules kick in.',
     target: 'all',
     startDay: 24,
     endDay: 27,
@@ -67,6 +68,14 @@ export const SCENARIOS: ScenarioDef[] = [
     blurb: 'Flight Engineer 1 develops a fever with rising heart rate and a small SpO2 dip. The flight surgeon is flagged.',
     target: 'fe1',
     startDay: 27,
+    endDay: 30,
+  },
+  {
+    id: 'masked',
+    label: 'Feels fine, reacts slow',
+    blurb: 'Flight Engineer 2 rates herself alert while her reaction test slows and her sleep runs a little short. Feeling alert and measured performance can disagree, so the app tells her to trust the test.',
+    target: 'fe2',
+    startDay: 26,
     endDay: 30,
   },
 ];
@@ -95,8 +104,9 @@ function applyScenario(
   const t = day - def.startDay; // 0-based day within the event
 
   if (def.id === 'spe') {
-    const profile = [6.5, 21.0, 13.5, 4.2];
-    v.radDose = profile[Math.min(t, profile.length - 1)] * (0.9 + 0.2 * rand());
+    // Replays the four days of the 7-10 March 2012 solar particle event that NASA's MSL/RAD measured on the cruise to Mars.
+    const profile = MSL_RAD_SPE_2012.doseEquivalentMsvPerDay;
+    v.radDose = profile[Math.min(t, profile.length - 1)];
     if (t === 1 && rand() < 0.6) symptoms.push('headache');
   }
 
@@ -112,6 +122,12 @@ function applyScenario(
     v.hrv *= 1 - 0.3 * severity;
     if (t >= 3) symptoms.push('fatigue');
     if (t >= 4 && rand() < 0.5) symptoms.push('headache');
+  }
+
+  if (def.id === 'masked') {
+    v.sleep = 6.2 + 0.2 * gaussian(rand);
+    v.pvtRt += 60 + 8 * gaussian(rand);
+    v.pvtLapses += 2;
   }
 
   if (def.id === 'illness') {
@@ -147,6 +163,8 @@ function sleepiness(scenario: ScenarioId, crewId: string, day: number, sp: Recor
   const active = def.id !== 'nominal' && (def.target === 'all' || def.target === crewId) && day >= def.startDay && day <= def.endDay;
   if (active && def.id === 'sleepDebt') k += 2.5 * Math.min(1, (day - def.startDay + 1) / 5);
   if (active && def.id === 'illness') k += 0.7;
+  // The point of this scenario: the person still rates themselves alert.
+  if (active && def.id === 'masked') k = Math.min(k, 3.4);
   return k;
 }
 

@@ -3,7 +3,7 @@ export const COUNTERMEASURES: Record<string, { title: string; steps: string[]; s
   bp: {
     title: 'Blood pressure follow-up',
     steps: [
-      'Rest 5 minutes seated, feet flat, arm supported, then repeat the cuff reading.',
+      'Rest 5 minutes, relaxed and stable with the arm supported at heart level, then repeat the cuff reading.',
       'Check caffeine, pain, and whether you just exercised; note it in the log.',
       'If the repeat reading stays in the flagged range, send both readings to the flight surgeon.',
       'Crisis range with headache, chest pain, vision change or confusion: treat as a medical event and follow the crew medical checklist now.',

@@ -1,6 +1,7 @@
 /**
  * Every threshold, number or claim shown in the app points to one of these sources.
- * Only official agency documents and peer-reviewed papers are listed.
+ * Agency documents and peer-reviewed papers come first; a few clinical reference pages (Mayo Clinic, Cleveland
+ * Clinic) and the Hexoskin announcement are included and named by organisation.
  */
 export interface Source {
   id: string;
@@ -30,7 +31,7 @@ export const SOURCES: Source[] = [
     org: 'NASA Office of the Chief Health and Medical Officer',
     title: 'Radiation Protection Technical Brief (NASA-STD-3001)',
     url: 'https://www.nasa.gov/wp-content/uploads/2023/03/radiation-protection-technical-brief-ochmo.pdf',
-    note: 'Career effective-dose limit of 600 mSv for all astronauts; 250 mSv short-term limit for a solar particle event.',
+    note: 'Career effective-dose limit of 600 mSv for all astronauts; crews must be protected from the design-reference solar particle event to under a 250 mSv effective dose.',
   },
   {
     id: 'rad-cruise',
@@ -45,6 +46,13 @@ export const SOURCES: Source[] = [
     title: "Mars' surface radiation environment measured with the Curiosity rover",
     url: 'https://doi.org/10.1126/science.1244797',
     note: 'Dose-equivalent rate of about 0.64 mSv/day on the Martian surface.',
+  },
+  {
+    id: 'rad-pds',
+    org: 'NASA Planetary Data System, Planetary Plasma Interactions node (MSL/RAD)',
+    title: 'MSL Mars Radiation Assessment Detector RDR V1.0, cruise-phase daily dose data (MSL-M-RAD-3-RDR-V1.0)',
+    url: 'https://pds-ppi.igpp.ucla.edu/data/MSL-M-RAD-3-RDR-V1.0/DATA/CRUISE/',
+    note: 'Daily silicon-detector dose from 6 Dec 2011 to 14 Jul 2012. The 7 to 10 March 2012 solar particle event reached 9805 microgray on its peak day; Space Vigil replays it with an estimated dose equivalent (method in src/data/radEvent.ts).',
   },
   {
     id: 'barger-2014',
@@ -96,6 +104,20 @@ export const SOURCES: Source[] = [
     note: 'Fever is a measured temperature of 100.4 F (38 C) or higher.',
   },
   {
+    id: 'aha-low-bp',
+    org: 'American Heart Association',
+    title: 'Low blood pressure: when blood pressure is too low',
+    url: 'https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure/low-blood-pressure-when-blood-pressure-is-too-low',
+    note: 'Hypotension is blood pressure below 90/60 mm Hg; usually not harmful unless there are other symptoms.',
+  },
+  {
+    id: 'stahn-2017',
+    org: 'Stahn et al., Scientific Reports 7 (2017)',
+    title: 'Increased core body temperature in astronauts during long-duration space missions',
+    url: 'https://doi.org/10.1038/s41598-017-15560-w',
+    note: 'Resting core body temperature was about 1 °C higher on the ISS than before flight, rising gradually over the first months.',
+  },
+  {
     id: 'mayo-spo2',
     org: 'Mayo Clinic',
     title: 'Hypoxemia (low blood oxygen)',
@@ -112,16 +134,23 @@ export const SOURCES: Source[] = [
   {
     id: 'iss-exercise',
     org: 'NASA NTRS',
-    title: 'ISS exercise countermeasures: assigned versus loaded exercise time',
+    title: 'Inadequate Loading Stimulus on ISS Results in Bone and Muscle Loss',
     url: 'https://ntrs.nasa.gov/citations/20110015001',
     note: 'About 146.8 min/day of exercise were assigned on ISS schedules; actual loaded time was much lower.',
   },
   {
     id: 'comm-delay',
-    org: 'NASA Ames (NTRS)',
-    title: 'Communication delays for lunar and Mars missions',
+    org: 'NASA Goddard, Space Communications and Navigation',
+    title: 'Space Communications: 7 Things You Need to Know',
+    url: 'https://www.nasa.gov/centers-and-facilities/goddard/space-communications-7-things-you-need-to-know/',
+    note: 'Mars: about 4 min one way at closest approach, about 24 min at greatest distance.',
+  },
+  {
+    id: 'ames-delay-review',
+    org: 'NASA NTRS (Ames)',
+    title: "The Impact of Delayed Communications on NASA's Human-Systems Operations: Preliminary Results of a Systematic Review",
     url: 'https://ntrs.nasa.gov/citations/20240006867',
-    note: 'Moon: about 1.3 s light time, roughly 3-10 s end to end with relays and processing. Mars: 4-24 min one-way.',
+    note: 'As communication delays grow, some responsibility has to shift from ground experts to the onboard crew.',
   },
   {
     id: 'twins',
@@ -133,9 +162,9 @@ export const SOURCES: Source[] = [
   {
     id: 'osdr',
     org: 'NASA Open Science Data Repository',
-    title: 'OSDR portal and Inspiration4 human datasets (OSD-569, 570, 571, 575)',
-    url: 'https://osdr.nasa.gov/',
-    note: 'Open biomedical datasets from spaceflight, including the first open commercial-crew human data (2024).',
+    title: 'SpaceX Inspiration4 Blood Serum Metabolic Panel and Immune/Cardiac Cytokine Arrays (OSD-575)',
+    url: 'https://osdr.nasa.gov/bio/repo/data/studies/OSD-575',
+    note: 'Open human spaceflight data. Used here only as a sanity check on the glucose baseline: 12 pre-flight serum glucose values from 4 crew, 56-100 mg/dL, mean 75, SD 11; fasting status is not documented.',
   },
   {
     id: 'iss-dose',
@@ -283,7 +312,7 @@ export const SOURCES: Source[] = [
     org: 'Dev et al., Front Physiol 15 (2024), NASA Behavioral Health and Performance Laboratory',
     title: 'Cognitive performance in ISS astronauts on 6-month low earth orbit missions',
     url: 'https://doi.org/10.3389/fphys.2024.1451269',
-    note: 'Twenty-five ISS astronauts: slower processing speed and sustained attention in early flight, and no clear association between measured cognitive performance and self-rated alertness.',
+    note: 'Twenty-five ISS astronauts: slower processing speed and sustained attention in early flight, and self-rated alertness (0 to 10) was related to only one cognitive measure, weakly and inversely (DSST accuracy, p = .05).',
   },
 ];
 

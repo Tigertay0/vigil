@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { PVT_TASK_ID } from '../data/routine';
 import { evaluate } from '../lib/rules';
+import { LAPSE_MS, PVT_MODES, summarizePvt, type PvtMode } from '../lib/pvt';
 import { isCheckin } from '../lib/today';
 import { useStore } from '../state/store';
 import { BtnTrail, SourceLinks } from './ui';
@@ -8,8 +9,6 @@ import type { View } from '../lib/views';
 import './screens.css';
 import './reaction.css';
 
-const TEST_SECONDS = 60;
-const LAPSE_MS = 355; // PVT-B lapse threshold (Basner, Mollicone and Dinges 2011)
 const MIN_ISI = 1000;
 const MAX_ISI = 4000; // PVT-B uses 1-4 s inter-stimulus intervals
 
@@ -58,6 +57,8 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
   const [elapsed, setElapsed] = useState(0);
   const [display, setDisplay] = useState('');
   const [saved, setSaved] = useState(false);
+  const [mode, setMode] = useState<PvtMode>('quick');
+  const testSeconds = PVT_MODES[mode].seconds;
 
   const startedAt = useRef(0);
   const stimulusAt = useRef(0);
@@ -112,8 +113,22 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
       timers.current = clearAll(timers.current);
       runningRef.current = false;
       setPhaseBoth('done');
-    }, TEST_SECONDS * 1000));
+    }, testSeconds * 1000));
     scheduleStimulus();
+  };
+
+  /** A different length means a different test, so a finished run that has not been saved is cleared. */
+  const changeMode = (next: PvtMode) => {
+    if (next === mode) return;
+    timers.current = clearAll(timers.current);
+    runningRef.current = false;
+    setMode(next);
+    setRts([]);
+    setFalseStarts(0);
+    setElapsed(0);
+    setSaved(false);
+    setDisplay('');
+    setPhaseBoth('idle');
   };
 
   const respond = () => {
@@ -154,9 +169,7 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
     };
   }, []);
 
-  const mean = rts.length ? rts.reduce((a, b) => a + b, 0) / rts.length : 0;
-  const lapses = rts.filter((r) => r >= LAPSE_MS).length;
-  const median = rts.length ? [...rts].sort((a, b) => a - b)[Math.floor(rts.length / 2)] : 0;
+  const { mean, median, lapses, storedLapses } = summarizePvt(rts, testSeconds);
   const running = phase !== 'idle' && phase !== 'done' ? true : elapsed > 0 && phase !== 'done';
 
   const ev = useMemo(() => evaluate(selected, settings), [selected, settings]);
@@ -169,7 +182,7 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
       crewId: selected.id,
       record: {
         day: settings.currentDay,
-        values: { ...(today?.values ?? {}), pvtRt: Math.round(mean), pvtLapses: lapses },
+        values: { ...(today?.values ?? {}), pvtRt: Math.round(mean), pvtLapses: storedLapses },
         symptoms: today?.symptoms ?? [],
         notes: today?.notes,
         // On top of a check-in it stays one; on its own it is a reaction-test record and the check-in is still due.
@@ -195,8 +208,8 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
         <div>
           <h1>Reaction self-test</h1>
           <p>
-            A 60-second version of the brief psychomotor vigilance test (PVT-B) ISS crews run as the Reaction Self Test. Tap the box or press
-            Space as soon as the counter appears.
+            The brief psychomotor vigilance test (PVT-B) ISS crews run as the Reaction Self Test. Choose the full 3-minute test or a
+            60-second quick version, then tap the box or press Space as soon as the counter appears.
           </p>
         </div>
       </div>
@@ -214,9 +227,16 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
             <span className="pvt-readout mono">{copy.readout}</span>
             {phase === 'false' && <span className="pvt-sub">Wait for the counter, then tap</span>}
           </div>
+          <div className="pvt-modes" role="group" aria-label="Test length">
+            {(Object.keys(PVT_MODES) as PvtMode[]).map((k) => (
+              <button key={k} type="button" className="btn" aria-pressed={mode === k} disabled={running} onClick={() => changeMode(k)}>
+                {mode === k ? '● ' : ''}{PVT_MODES[k].label}
+              </button>
+            ))}
+          </div>
           <div className="pvt-actions">
             {!running && phase !== 'done' && (
-              <button type="button" className="btn-primary" onClick={start}>Start 60 s test<BtnTrail /></button>
+              <button type="button" className="btn-primary" onClick={start}>{PVT_MODES[mode].startLabel}<BtnTrail /></button>
             )}
             {phase === 'done' && (
               <>
@@ -225,7 +245,7 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
                 {saved && <button type="button" className="btn" onClick={() => go('today')}>Back to Today</button>}
               </>
             )}
-            <span className="muted mono pvt-clock">{Math.min(TEST_SECONDS, elapsed).toFixed(0)} / {TEST_SECONDS} s</span>
+            <span className="muted mono pvt-clock">{Math.min(testSeconds, elapsed).toFixed(0)} / {testSeconds} s</span>
           </div>
           <dl className="pvt-stats">
             {stats.map((s) => (
@@ -236,6 +256,9 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
             ))}
           </dl>
           {falseStarts > 0 && <p className="small-note">{falseStarts} false start{falseStarts > 1 ? 's' : ''} (pressed before the counter).</p>}
+          {mode === 'full' && phase === 'done' && (
+            <p className="small-note">Lapses are saved per minute ({storedLapses}) so this test compares with your baseline like the quick one does.</p>
+          )}
         </div>
         <div className="panel">
           <h2>How to read it</h2>
@@ -248,8 +271,9 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
             baseline as "keep an eye on it", and 35% slower or 6 extra lapses as "needs action".
           </p>
           <p className="small-note">
-            The full PVT-B lasts 3 minutes; this 60-second version is for the prototype and keeps the same 355 ms lapse threshold and 1-4 s
-            random wait.
+            The full test lasts 3 minutes, with a 355 ms lapse threshold and a 1-4 s random wait. The 60-second quick version keeps the same
+            threshold and wait but is a shortened form that has not been validated against it. Neither has been checked against laboratory
+            equipment, so results are judged against your own baseline.
           </p>
           <SourceLinks ids={['pvt-b', 'reaction-self-test']} />
         </div>

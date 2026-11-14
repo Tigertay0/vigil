@@ -51,6 +51,69 @@ describe('reference rules fire at the cited cut-offs', () => {
     expect(ev.notifySurgeon).toBe(true);
   });
 
+  it('blood pressure: stage 1 counts three days even when systolic and diastolic take turns being high', () => {
+    const turns = withToday(
+      withToday(withToday(cdr(), { bpSys: 132, bpDia: 76 }, [], 28), { bpSys: 124, bpDia: 82 }, [], 29),
+      { bpSys: 125, bpDia: 81 },
+    );
+    expect(titles(turns)).toContain('Blood pressure in stage 1 range for 3 days');
+    expect(titles(withToday(cdr(), { bpSys: 125, bpDia: 81 }))).not.toContain('Blood pressure in stage 1 range for 3 days');
+  });
+
+  it('stage 1 blood pressure needs three days: pure systolic or pure diastolic runs fire, two days or a broken run do not', () => {
+    const run = (days: Array<[number, number]>) => {
+      let m = cdr();
+      // The simulated Commander sits close to the diastolic cut-off, so start from a week of clearly normal readings.
+      for (let d = base.currentDay - 6; d <= base.currentDay; d++) m = withToday(m, { bpSys: 118, bpDia: 72 }, [], d);
+      days.forEach(([sys, dia], i) => {
+        m = withToday(m, { bpSys: sys, bpDia: dia }, [], base.currentDay - (days.length - 1 - i));
+      });
+      return titles(m);
+    };
+    const stage1 = 'Blood pressure in stage 1 range for 3 days';
+    const cases: Array<{ label: string; days: Array<[number, number]>; fires: boolean }> = [
+      { label: 'three systolic days', days: [[130, 70], [131, 70], [132, 70]], fires: true },
+      { label: 'three diastolic days', days: [[120, 80], [120, 81], [120, 82]], fires: true },
+      { label: 'only two days', days: [[130, 70], [131, 70]], fires: false },
+      { label: 'a broken run', days: [[130, 70], [120, 70], [130, 70]], fires: false },
+      { label: 'today back in range', days: [[132, 82], [133, 83], [129, 79]], fires: false },
+    ];
+    for (const c of cases) expect(run(c.days).includes(stage1), c.label).toBe(c.fires);
+  });
+
+  it('low systolic pressure is a reference-range finding at 89 but not at 90', () => {
+    const low = (sys: number) => evaluate(withToday(cdr(), { bpSys: sys, bpDia: 58 }), base).findings.find((x) => x.title === 'Low systolic pressure');
+    expect(low(90)).toBeUndefined();
+    const f = low(89);
+    expect(f?.basis).toBe('reference');
+    expect(f?.level).toBe('amber');
+    expect(f?.reason).toContain('below 90/60');
+    expect(f?.sources).toEqual(['aha-low-bp']);
+  });
+
+  it('career dose: half the 600 mSv limit is amber, 80% is red with a surgeon flag, and both say this mission only', () => {
+    const withDose = (perDay: number) => {
+      const m = cdr();
+      return { ...m, records: m.records.map((r) => (r.day >= 1 ? { ...r, values: { ...r.values, radDose: perDay } } : r)) };
+    };
+    const half = evaluate(withDose(10), base);
+    expect(half.cumulativeDoseMsv).toBeCloseTo(300, 0);
+    const amber = half.findings.find((f) => f.title === 'Mission dose past half the career limit');
+    expect(amber?.level).toBe('amber');
+    expect(amber?.reason).toContain('this mission only');
+    const high = evaluate(withDose(16), base);
+    expect(high.cumulativeDoseMsv).toBeCloseTo(480, 0);
+    const red = high.findings.find((f) => f.title === 'Mission dose nearing the career limit');
+    expect(red?.level).toBe('red');
+    expect(red?.notifySurgeon).toBe(true);
+  });
+
+  it('a radiation spike quotes the NASA-STD-3001 solar particle requirement', () => {
+    const f = evaluate(withToday(cdr(), { radDose: 19 }), base).findings.find((x) => x.title === 'Radiation dose spike');
+    expect(f?.reason).toContain('NASA-STD-3001');
+    expect(f?.reason).toContain('250 mSv');
+  });
+
   it('fever at 38.0 C is amber and notifies; 39.4 C is red', () => {
     const m = cdr();
     expect(titles(withToday(m, { temp: 37.9 }))).not.toContain('Fever');

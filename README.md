@@ -37,8 +37,8 @@ starts from its own icon and works without a connection.
 1. **Install Node.js (LTS)** from https://nodejs.org. The app needs Node 20.19 or newer, or 22.12 or newer
    (the requirement comes from Vite). The default installer options are fine.
 2. **Download the code.** On the GitHub page, click the green **Code** button, then **Download ZIP**, and unzip
-   it. Or, with git: `git clone https://github.com/victor-andiazabal/victor-andiazabal.git`.
-3. **Start it** from the `vigil` folder:
+   it. Or, with git: `git clone https://github.com/Tigertay0/vigil.git`.
+3. **Start it** from the project folder:
    - Windows: double-click `start-windows.bat`.
    - macOS: double-click `start-mac.command`. macOS may refuse to open it the first time; right-click the
      file, choose **Open**, then **Open** again. If nothing happens, open Terminal in the folder and run
@@ -51,7 +51,7 @@ starts from its own icon and works without a connection.
 For developers, the same thing by hand:
 
 ```bash
-cd vigil && npm install && npm start
+npm install && npm start
 ```
 
 ### A 2-minute tour of the demo
@@ -97,15 +97,15 @@ beats per minute at rest. Crews need a tool that notices those shifts for them a
 
 ## What Space Vigil does
 
-- **Today**: one screen with the day's status (Nominal, Watch or Act now) and its reason, the single next action,
+- **Today**: one screen with the day's status (Normal for you, Keep an eye on it or Needs action) and its reason, the single next action,
   a compact body map, and one tile per indicator with its last 14 days as day bars. Tiles that need attention
   come first.
 - **Daily check-in** in five short steps (vitals, body, sleep and alertness, symptoms, review) for blood pressure,
   heart rate, heart rate variability, breathing rate, SpO2, temperature, fasting glucose, body mass, sleep,
   sleepiness (Karolinska scale), exercise, mood, stress, symptoms and radiation dose. Keyboard, touch, or values
   pre-filled from a wearable, each with your own baseline band beside it.
-- **Crew profiles**: four simulated crew members with names, roles, agencies (NASA, ESA, CSA, JAXA), generated
-  portraits and days in space. Fictional people with plausible resting values; switch between them from the
+- **Crew profiles**: four simulated crew members with names, roles, agencies (NASA, ESA, CSA, JAXA), line-icon
+  portraits drawn in code (no AI images) and days in space. Fictional people with plausible resting values; switch between them from the
   crew tabs in the top bar.
 - **First-run tutorial**: seven steps that point at the real controls; replay it from the help button.
 - **Built around a real wearable.** The intended live source is the Bio-Monitor (Hexoskin Astroskin) shirt that
@@ -113,12 +113,13 @@ beats per minute at rest. Crews need a tool that notices those shifts for them a
   garment over Bluetooth. The Learn page shows the data path from shirt to flight surgeon.
 - **Camera pulse**: 20 seconds of video from the phone or laptop camera, fingertip or face, turned into a heart-rate
   estimate on the device (photoplethysmography, Verkruysse 2008). Labelled experimental; fills the heart-rate field.
-- **Reaction self-test**: a 60-second psychomotor vigilance test, the same family of test ISS crews run as the
-  Reaction Self Test, with the PVT-B lapse threshold of 355 ms.
+- **Reaction self-test**: the psychomotor vigilance test ISS crews run as the Reaction Self Test, with the PVT-B
+  lapse threshold of 355 ms. Pick the full 3-minute test or a 60-second quick version; lapses from the longer test
+  are saved per minute so both compare with the same baseline.
 - **Personal baseline**: 14 pre-flight days give each crew member a median and a robust spread (median
   absolute deviation) per indicator. In-flight values are judged against the person, not only the population.
 - **Transparent alerts**: every alert says which rule fired, with the numbers, the published source, and a
-  checklist of what to do. Three levels: Nominal, Watch, Act now. Alerts that need the ground say so.
+  checklist of what to do. Three levels: Normal for you, Keep an eye on it, Needs action. Alerts that need the ground say so.
 - **Flight surgeon message**: one copy-paste summary of the day's values and flags, built for a link where a
   reply takes up to 48 minutes round trip.
 - **Body map**: a body figure coloured by the same rule results, grouped into seven body systems (brain and
@@ -126,7 +127,7 @@ beats per minute at rest. Crews need a tool that notices those shifts for them a
   system to see which indicators feed it, which of the five hazards affect it, and what to do.
 - **Crew and ground link with light-time delay**: the crew tablet sends the day's report to the ground console
   (open `?view=ground` in a second window) and the message arrives only after the one-way delay of the chosen
-  link (Moon 3-10 s end to end with relays, Mars 4-24 min). Demo time compresses 1 minute of delay into 1 second so it plays live.
+  link (Moon seconds, Mars 4-24 min). Demo time compresses 1 minute of delay into 1 second so it plays live.
   The ground replies the same way. Messages are stored and forwarded; nothing needs a server.
 - **Mission patches**: badges for habits, not readings: first check-in, 7- and 14-day streaks, a full routine
   day, reaction tests on 3 days in a week, 147 min of exercise on 5 days in a row, a complete record. Patches
@@ -142,14 +143,19 @@ beats per minute at rest. Crews need a tool that notices those shifts for them a
   how the rules decide, what each indicator means and how to measure it on board, how it was designed, and every source.
 - **Four environments**: space station, deep-space transit, pressurized rover, planetary base. Each sets the
   comm delay and the expected daily radiation dose from measured values.
-- **Four demo scenarios**: nominal, solar particle event, sleep debt with slowed reactions, early infection.
+- **Five demo scenarios**: nominal, solar particle event (a replay of NASA's MSL/RAD measurements of the 7 to 10
+  March 2012 event), sleep debt with slowed reactions, early infection, and
+  "Feels fine, reacts slow" (a crew member rates herself alert while her reaction test is slow, so the app says to
+  trust the test).
 - Runs fully offline in the browser and installs as a web app on a tablet or phone (service worker caches
   everything after the first load). Data stays on the device; export JSON or CSV at any time.
 
 ## Where the numbers come from
 
-Every threshold is either a published cut-off or a comparison with the crew member's own baseline, and the
-alert says which. The sources are listed in [docs/SOURCES.md](docs/SOURCES.md) and inside the app under Learn.
+Every threshold is either a published cut-off, a comparison with the crew member's own baseline, or one of our own
+labelled conventions, and the alert says which. The sources are listed in [docs/SOURCES.md](docs/SOURCES.md) and
+inside the app under Learn. [docs/VALIDATION.md](docs/VALIDATION.md) shows, rule by rule, the sources and tests
+behind each alert, what was checked against primary documents, and what has not been validated.
 Highlights:
 
 | Rule | Value | Source |
@@ -161,10 +167,10 @@ Highlights:
 | Sleepiness | Karolinska scale 7 or more flagged | Kaida et al. 2006 |
 | Sleep | adults need ≥7 h; ISS crews scheduled 8.5 h, average 6.1 h | AASM; Barger et al. 2014 |
 | Reaction test | 3-minute PVT-B, lapse ≥355 ms | Basner, Mollicone, Dinges 2011; NASA NTRS |
-| Radiation | 600 mSv career limit, 250 mSv per solar particle event | NASA OCHMO, NASA-STD-3001 |
+| Radiation | 600 mSv career limit; crews protected from the design-reference solar particle event to under 250 mSv | NASA OCHMO, NASA-STD-3001 |
 | Daily dose | 1.84 mSv/day in transit, 0.64 mSv/day on Mars, 0.2-0.5 mSv/day on ISS | MSL/RAD (Zeitlin 2013, Hassler 2014); Shavers 2024 |
 | Exercise | about 147 min/day assigned on ISS | NASA NTRS |
-| Comm delay | Moon about 1.3 s light time, 3-10 s with relays; Mars 4-24 min | NASA Ames |
+| Comm delay | Moon about 1.3 s light time (the 10 s demo preset is our assumption); Mars 4-24 min one way | NASA Goddard SCaN |
 | Breathing rate | 12-20 per minute typical | Cleveland Clinic |
 | Heart rate variability | personal baseline only | Shaffer and Ginsberg 2017 |
 | Wearable source | Bio-Monitor / Astroskin on ISS since 2019 | CSA; NASA NTRS 20190000238 |
@@ -173,7 +179,7 @@ All crew data in the demo is simulated and labelled as such. No real astronaut r
 
 ## Development
 
-To run the app, see [Try it](#try-it) above. Other scripts, from the `vigil` folder (Node 20.19+ or 22.12+):
+To run the app, see [Try it](#try-it) above. Other scripts, from the project folder (Node 20.19+ or 22.12+):
 
 ```bash
 npm run dev       # same dev server as npm start, without opening a browser
@@ -183,7 +189,7 @@ npm run build     # type-check and production build into dist/
 npm run preview   # serve the production build locally
 ```
 
-The tests (vitest) cover the statistics, the simulator, every alert rule at its cited cut-off, CSV import, the body map, the comm link queue, the badges, the Today grouping and the check-in draft.
+The tests (vitest) cover the statistics, the simulator, every one of the 37 alert rules at its boundary (published cut-offs and our own labelled conventions), CSV import, the body map, the comm link queue, the badges, the Today grouping and the check-in draft.
 
 The production build goes to `dist/`. The GitHub Actions workflow in
 `.github/workflows/pages.yml` (at the repository root) builds and deploys to GitHub Pages on every push to `main`.
@@ -211,4 +217,5 @@ vigil/
 
 Space Vigil is a decision-support prototype, not a medical device. It does not diagnose. The published ranges are
 general adult references; operational limits on a real mission are set by the flight surgeon. The 60-second
-reaction test is a shortened form of the validated 3-minute PVT-B.
+quick version of the reaction test is a shortened form of the 3-minute PVT-B; neither version has been checked against
+laboratory equipment.

@@ -22,7 +22,7 @@ limits stay with the surgeon.
 
 **Where do the thresholds come from?**
 Each one is cited in the alert itself and in the Learn screen: NASA-STD-3001 for radiation (600 mSv career,
-250 mSv per solar event), ACC/AHA for blood pressure, CDC for fever, ADA for glucose, Mayo Clinic for SpO2,
+250 mSv design-reference solar event requirement), ACC/AHA for blood pressure, CDC for fever, ADA for glucose, Mayo Clinic for SpO2,
 AASM for sleep, Basner 2011 for the reaction test. Daily dose rates are measured values from Curiosity's RAD
 instrument and ISS dosimetry. The few conventions that are ours (5% mass loss, 50% and 80% of the career
 limit) are labelled as ours in the alert text.
@@ -34,7 +34,10 @@ typical deviations away, or a three-day trend, is flagged even inside the popula
 
 **Is the data real?**
 The crew data is simulated and labelled as such everywhere. No real astronaut records are used. The
-simulator is deterministic (same seed, same mission) and the scenarios are built to show the rules firing.
+simulator is deterministic (same seed, same mission) and the scenarios are built to show the rules firing. The
+one real-data exception is the solar storm: it replays NASA's MSL/RAD measurements of the 7 to 10 March 2012
+solar particle event, read from the NASA Planetary Data System, with dose equivalent estimated from the silicon
+dose using published conversion factors.
 Any real reading can be typed in, measured with the camera, or imported from a CSV.
 
 **How does the camera pulse work?**
@@ -43,12 +46,14 @@ uses the green channel over the forehead region (Verkruysse 2008). We detrend, w
 42-180 bpm band for the spectral peak, and refuse to report a value when the peak is not clearly above the
 band average. It is labelled experimental.
 
-**Why a 60-second reaction test when the ISS one is 3 minutes?**
-Demo length. The thresholds (355 ms lapse, 1-4 s random wait) are the PVT-B ones. Validating the short form
-against the 3-minute version is on the roadmap.
+**Why is there a 60-second reaction test when the ISS one is 3 minutes?**
+The app offers both: the full 3-minute test, and a 60-second quick version for short demos. The thresholds
+(355 ms lapse, 1-4 s random wait) are the PVT-B ones. Lapses from the long test are saved per minute so both compare
+with the same baseline. Neither has been checked against laboratory equipment or against each other on enough
+people; that is on the roadmap.
 
 **What about the communication delay?**
-Each environment carries its one-way delay (NASA Ames figures). The surgeon message bundles the day's values
+Each environment carries its one-way delay (NASA Goddard figures: Mars 4-24 min), and every alert that needs the ground says what that means there: call now on a station, act without waiting at Mars. The surgeon message bundles the day's values
 and every flag so one exchange is enough, and the ground view shows what the surgeon receives.
 
 **Why no server?**
@@ -70,7 +75,7 @@ Design thinking. We started from three users, not from the data: the astronaut, 
 the flight surgeon. The problem statement and the 30-second success criterion came before any screen.
 
 **What would you build next?**
-Bluetooth cuff and wearable input, baselines informed by NASA OSDR human datasets, sync between crew tablets
+Bluetooth cuff and wearable input, baselines from real astronaut data as it is published (OSDR today holds only a small Inspiration4 glucose table, which we use as a sanity check), sync between crew tablets
 and a real ground link, and validation of the short reaction test.
 
 **How is it built?**
@@ -79,7 +84,7 @@ unit tests. It installs as a web app and works offline.
 
 ## Demo order (3 minutes)
 
-1. Today, Elena Marsh (Commander, NASA), day 30: the Act now status, its reason and the one next action. Say what the ring means.
+1. Today, Elena Marsh (Commander, NASA), day 30: the Needs action status, its reason and the one next action. Say what the ring means.
 2. Click the Sleep tile: trend with baseline band, 7-hour line, scenario window.
 3. Alerts: open the reaction-time checklist, show the sources, copy the surgeon message.
 4. Reaction test: run 10 seconds of it, stop.

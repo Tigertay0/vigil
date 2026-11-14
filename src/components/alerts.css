@@ -14,6 +14,7 @@
 .finding-body { display: grid; gap: var(--s-3); }
 .finding-tags { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .finding-block { display: grid; gap: var(--s-1); }
+.finding-fold-title { margin: 0; font: inherit; }
 .finding-label { margin: 0; font-size: 14px; font-weight: 500; color: var(--text-2); letter-spacing: 0; }
 .finding-text { margin: 0; color: var(--text); max-width: 72ch; }
 .finding-foot { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2) var(--s-3); padding-top: var(--s-3); border-top: 1px solid var(--line); }

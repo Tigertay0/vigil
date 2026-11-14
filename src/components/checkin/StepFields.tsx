@@ -132,7 +132,7 @@ export function StepFields({ step, draft, focus, onActive, go }: StepFieldsProps
               </svg>
             </button>
             <button type="button" className="btn" onClick={() => go('pvt')}>
-              Run the 60-second reaction test
+              Run the reaction test
             </button>
           </div>
           {pvtOpen && (

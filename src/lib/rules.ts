@@ -77,19 +77,19 @@ function ruleBloodPressure(ctx: Ctx) {
       indicator: 'bpSys', level: 'amber', basis: 'reference',
       title: 'Blood pressure in stage 2 range',
       reason: `${s}/${d} mmHg. Stage 2 hypertension is 140 or higher systolic, or 90 or higher diastolic (ACC/AHA 2017).`,
-      action: 'Repeat the reading seated after 5 minutes of rest; send both readings to the flight surgeon at the next conference.',
+      action: 'Repeat the reading after 5 minutes of rest, relaxed with the arm supported; send both readings to the flight surgeon at the next conference.',
       notifySurgeon: true, sources: ['aha-bp'],
     });
     return;
   }
-  const sysSeries = seriesFor(ctx.flight, 'bpSys');
-  const diaSeries = seriesFor(ctx.flight, 'bpDia');
-  const stage1Days = Math.min(
-    consecutive(sysSeries, (x) => x >= 130),
-    3,
-  );
-  const stage1DiaDays = consecutive(diaSeries, (x) => x >= 80);
-  if ((s >= 130 || d >= 80) && (stage1Days >= 3 || stage1DiaDays >= 3)) {
+  // A day is in the stage 1 range when either number is, so a systolic-high day followed by a diastolic-high day still counts as consecutive.
+  const diaByDay = new Map(seriesFor(ctx.flight, 'bpDia').map((p) => [p.day, p.value]));
+  const stage1Points = seriesFor(ctx.flight, 'bpSys').map((p) => ({
+    day: p.day,
+    value: p.value >= 130 || (diaByDay.get(p.day) ?? 0) >= 80 ? 1 : 0,
+  }));
+  const stage1Days = consecutive(stage1Points, (x) => x === 1);
+  if ((s >= 130 || d >= 80) && stage1Days >= 3) {
     add(ctx, 'bp-stage1', {
       indicator: 'bpSys', level: 'amber', basis: 'reference',
       title: 'Blood pressure in stage 1 range for 3 days',
@@ -100,11 +100,11 @@ function ruleBloodPressure(ctx: Ctx) {
   }
   if (s < 90) {
     add(ctx, 'bp-low', {
-      indicator: 'bpSys', level: 'amber', basis: 'baseline',
+      indicator: 'bpSys', level: 'amber', basis: 'reference',
       title: 'Low systolic pressure',
-      reason: `${s}/${d} mmHg, well below your baseline of ${round(ctx.baselines.bpSys?.median ?? 0, 0)} mmHg.`,
-      action: 'Check hydration and any dizziness; sit before standing; retake in 10 minutes.',
-      notifySurgeon: false, sources: ['aha-bp'],
+      reason: `${s}/${d} mmHg. The AHA calls blood pressure below 90/60 mmHg low; this check uses the systolic number (under 90)${ctx.baselines.bpSys ? `; your own baseline is ${round(ctx.baselines.bpSys.median, 0)} mmHg` : ''}.`,
+      action: 'Check hydration and any dizziness; move slowly when changing position; retake in 10 minutes.',
+      notifySurgeon: false, sources: ['aha-low-bp'],
     });
   }
 }
@@ -224,9 +224,9 @@ function ruleTemp(ctx: Ctx) {
     add(ctx, 'temp-fever', {
       indicator: 'temp', level: 'amber', basis: 'reference',
       title: 'Fever',
-      reason: `${t.toFixed(1)} °C. The CDC defines fever as 38.0 °C (100.4 °F) or higher.`,
+      reason: `${t.toFixed(1)} °C. The CDC defines fever as 38.0 °C (100.4 °F) or higher. Resting temperature can run about 1 °C higher than before flight on long missions (Stahn 2017), so compare with your own recent readings.`,
       action: 'Retake in 30 minutes, log symptoms, increase fluids, and report to the flight surgeon; infection in a closed cabin affects the whole crew.',
-      notifySurgeon: true, sources: ['cdc-fever', 'hrp-hazards'],
+      notifySurgeon: true, sources: ['cdc-fever', 'stahn-2017', 'hrp-hazards'],
     });
   } else if (t < 35.0) {
     add(ctx, 'temp-low', {
@@ -275,7 +275,7 @@ function ruleGlucose(ctx: Ctx) {
       notifySurgeon: true, sources: ['ada-glucose'],
     });
   } else if (g >= 100) {
-    const days = consecutive(seriesFor(ctx.flight, 'glucose'), (x) => x >= 100);
+    const days = consecutive(seriesFor(ctx.flight, 'glucose'), (x) => x >= 100 && x < 126);
     if (days >= 3) {
       add(ctx, 'glu-pre', {
         indicator: 'glucose', level: 'amber', basis: 'reference',
@@ -325,7 +325,7 @@ function rulePVT(ctx: Ctx) {
     add(ctx, 'pvt-red', {
       indicator: 'pvtRt', level: 'red', basis: 'baseline',
       title: 'Reaction time well below your baseline',
-      reason: `Mean ${Math.round(rt)} ms, ${Math.round(pct)}% slower than your pre-flight median of ${Math.round(b.median)} ms${lapses !== null ? `, with ${lapses} lapses (355 ms or slower)` : ''}.`,
+      reason: `Mean ${Math.round(rt)} ms, ${Math.round(pct)}% slower than your pre-flight median of ${Math.round(b.median)} ms${lapses !== null ? `, with ${lapses} lapses (355 ms or slower)` : ''}. This is judged against your own baseline: the screen and tablet add their own delay, and the 60-second quick test is a short form of the 3-minute PVT-B.`,
       action: 'Avoid EVA prep, docking or driving until a repeat test is back near baseline. Rest if the timeline allows.',
       notifySurgeon: true, sources: ['pvt-b', 'reaction-self-test'],
     });
@@ -367,7 +367,7 @@ function ruleSleepiness(ctx: Ctx) {
     add(ctx, 'kss-mismatch', {
       indicator: 'kss', level: 'amber', basis: 'baseline',
       title: 'You feel alert but your reaction test is slow',
-      reason: `You rated ${k}/9 (${kssAnchor(k)}), but your reaction test averaged ${Math.round(rt)} ms, ${pct}% slower than your pre-flight median of ${Math.round(b.median)} ms. In ISS astronauts, self-rated alertness did not track measured performance.`,
+      reason: `You rated ${k}/9 (${kssAnchor(k)}), but your reaction test averaged ${Math.round(rt)} ms, ${pct}% slower than your pre-flight median of ${Math.round(b.median)} ms. In ISS astronauts on a cognitive test battery, self-rated alertness did not track measured performance.`,
       action: 'Trust the test, not the feeling, for critical tasks today: hold EVA prep, docking or driving until a repeat test is back near your baseline.',
       notifySurgeon: false, sources: ['dev-2024', 'pvt-b'],
     });
@@ -411,12 +411,15 @@ function ruleRadiation(ctx: Ctx, cumulative: number) {
   const d = v(ctx, 'radDose');
   if (d === null) return;
   const env = ENVIRONMENTS[ctx.settings.environment];
-  const ratio = d / env.dailyDoseMsv;
-  if (ratio >= 10) {
+  // Rounded so that exactly 3 times and 5 times the daily rate are not pushed under the line by float error (5.52 / 1.84 is 2.9999999999999996).
+  const ratio = Math.round((d / env.dailyDoseMsv) * 1e6) / 1e6;
+  // Our convention, not a NASA rule. Red sits at 5 times the usual rate because the largest cruise event NASA's MSL/RAD
+  // measured (8 March 2012) was about 8 times the cruise mean, so a red line above that could never fire on a real storm.
+  if (ratio >= 5) {
     add(ctx, 'rad-red', {
       indicator: 'radDose', level: 'red', basis: 'reference',
       title: 'Radiation dose spike',
-      reason: `${d.toFixed(2)} mSv today, about ${Math.round(ratio)} times the usual rate for this environment (${env.dailyDoseMsv} mSv/day). NASA limits a single solar particle event to 250 mSv.`,
+      reason: `${d.toFixed(2)} mSv today, about ${Math.round(ratio)} times the usual rate for this environment (${env.dailyDoseMsv} mSv/day). NASA-STD-3001 requires crews to be protected from the design-reference solar particle event to under 250 mSv.`,
       action: 'Move to the storm shelter, stop EVA, confirm with the vehicle monitor, and report to mission control.',
       notifySurgeon: true, sources: ['ochmo-radiation', 'rad-cruise', 'rad-surface'],
     });
@@ -435,7 +438,7 @@ function ruleRadiation(ctx: Ctx, cumulative: number) {
     add(ctx, 'rad-career', {
       indicator: 'radDose', level: 'red', basis: 'reference',
       title: 'Mission dose nearing the career limit',
-      reason: `${cumulative.toFixed(0)} mSv accumulated this mission, ${Math.round(pctCareer)}% of the 600 mSv career limit.`,
+      reason: `${cumulative.toFixed(0)} mSv accumulated this mission, ${Math.round(pctCareer)}% of the 600 mSv career limit (this mission only; any earlier career dose is not counted here).`,
       action: 'Mission control and the flight surgeon manage exposure planning; this entry only tracks the total.',
       notifySurgeon: true, sources: ['ochmo-radiation'],
     });
@@ -443,7 +446,7 @@ function ruleRadiation(ctx: Ctx, cumulative: number) {
     add(ctx, 'rad-career', {
       indicator: 'radDose', level: 'amber', basis: 'reference',
       title: 'Mission dose past half the career limit',
-      reason: `${cumulative.toFixed(0)} mSv accumulated this mission, ${Math.round(pctCareer)}% of the 600 mSv career limit.`,
+      reason: `${cumulative.toFixed(0)} mSv accumulated this mission, ${Math.round(pctCareer)}% of the 600 mSv career limit (this mission only; any earlier career dose is not counted here).`,
       action: 'No action for you; the value is shared with the flight surgeon for exposure planning.',
       notifySurgeon: false, sources: ['ochmo-radiation'],
     });
@@ -508,7 +511,7 @@ function ruleSymptoms(ctx: Ctx) {
     add(ctx, 'symptom-persist', {
       indicator: 'symptoms', level: 'amber', basis: 'symptom',
       title: 'Symptom present for 3 days or more',
-      reason: `${persistent.map((s) => symptomById(s)?.label).join(', ')} reported on at least three consecutive days.`,
+      reason: `${persistent.map((s) => symptomById(s)?.label).join(', ')} reported on your last three check-ins in a row.`,
       action: 'Log severity daily and raise it at the next private medical conference.',
       notifySurgeon: false, sources: ['hrp-hazards'],
     });

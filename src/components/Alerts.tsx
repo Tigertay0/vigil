@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { COUNTERMEASURES } from '../data/countermeasures';
 import { ENVIRONMENTS } from '../data/indicators';
 import { buildReport, useComm } from '../lib/comm';
+import { groundGuidance } from '../lib/escalation';
 import { evaluate } from '../lib/rules';
 import type { Finding } from '../lib/types';
 import { useStore } from '../state/store';
@@ -103,7 +104,9 @@ export function Alerts() {
             return (
               <article key={f.id} className={`alert ${f.level} finding${acked ? ' acked' : ''}${isWatch ? ' is-watch' : ''}`}>
                 {isWatch ? (
-                  <FoldButton open={expanded} controls={bodyId} onToggle={() => toggleWatch(f.id)}>{title}</FoldButton>
+                  <h3 className="finding-fold-title">
+                    <FoldButton open={expanded} controls={bodyId} onToggle={() => toggleWatch(f.id)}>{title}</FoldButton>
+                  </h3>
                 ) : (
                   <header className="finding-head">
                     <Pill level={f.level} />
@@ -125,6 +128,12 @@ export function Alerts() {
                       <h4 className="finding-label">Do now</h4>
                       <p className="finding-text">{f.action}</p>
                     </div>
+                    {f.notifySurgeon && (
+                      <div className="finding-block">
+                        <h4 className="finding-label">Ground link</h4>
+                        <p className="finding-text">{groundGuidance(comm.preset, f.level === 'red')}</p>
+                      </div>
+                    )}
                     {isOpen && cl && (
                       <div className="finding-checklist">
                         <h4 className="finding-label">{cl.title}</h4>
@@ -179,7 +188,7 @@ export function Alerts() {
           <div className="panel">
             <h2>Message to the flight surgeon</h2>
             <p className="small-note" style={{ marginTop: 0 }}>
-              Ground reply will take at least {env.commDelay} each way. The message bundles today's values and every flag so one exchange is enough.
+              One-way delay to the ground: {env.commDelay}. The message bundles today's values and every flag so one exchange is enough.
               If the link is down, copy it and relay it by any other channel.
             </p>
             <label className="sr-only" htmlFor="surgeon-message">Message to the flight surgeon</label>

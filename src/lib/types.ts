@@ -21,7 +21,7 @@ export type Level = 'green' | 'amber' | 'red';
 
 export type Environment = 'station' | 'transit' | 'rover' | 'base';
 
-export type ScenarioId = 'nominal' | 'spe' | 'sleepDebt' | 'illness';
+export type ScenarioId = 'nominal' | 'spe' | 'sleepDebt' | 'illness' | 'masked';
 
 export interface DayRecord {
   /** Mission day. Negative or zero values are pre-flight baseline days. */

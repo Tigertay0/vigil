@@ -18,6 +18,8 @@
 .pvt-stage.false { background: var(--amber); border-color: var(--amber); color: var(--bg); }
 .pvt-stage.done { border-color: var(--text-2); }
 
+.pvt-modes { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-4); }
+.pvt-modes .btn[aria-pressed='true'] { font-weight: 600; box-shadow: inset 0 -3px 0 var(--text); }
 .pvt-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-top: var(--s-4); }
 .pvt-clock { font-size: 13px; margin-left: auto; }
 

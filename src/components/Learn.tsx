@@ -1,4 +1,5 @@
 import { INDICATORS } from '../data/indicators';
+import { NASA_DATA_LIMIT, NASA_DATA_ROWS } from '../data/nasaData';
 import { SOURCES } from '../data/sources';
 import { LEVEL_LABEL } from '../lib/format';
 import type { Level } from '../lib/types';
@@ -11,9 +12,28 @@ import './learn.css';
 const HAZARDS = [
   { t: 'Space radiation', d: 'No atmosphere and no magnetic field, so cosmic rays and solar storms hit harder. The dosimeter on your belt counts it. Space Vigil compares each day with what is normal for where you are, and keeps a running total against the 600 mSv career limit.' },
   { t: 'Isolation and confinement', d: 'Months in a small cabin with the same few people, no privacy, and family far away. This shows up as shorter sleep, flatter mood and slower reactions, which is what the morning check-in asks about.' },
-  { t: 'Distance from Earth', d: 'Halfway to Mars a message takes up to 24 minutes each way, so the crew must assess and act first. That is why every alert carries its own reason and checklist instead of saying "ask a doctor".' },
+  { t: 'Distance from Earth', d: 'At its farthest, Mars is up to 24 minutes away by radio each way, so the crew must assess and act first. That is why every alert carries its own reason and checklist instead of saying "ask a doctor".' },
   { t: 'Gravity fields', d: 'Bones thin, muscles shrink and fluid shifts toward the head. Exercise minutes and body mass are tracked because they are both the countermeasure and the symptom.' },
   { t: 'Hostile, closed environment', d: 'Germs, CO2 and noise have nowhere to go in a sealed cabin. One person\'s fever is everybody\'s problem, so temperature, blood oxygen, breathing and symptom clusters get a close look.' },
+];
+
+/** The three design choices that set Space Vigil apart from a plain traffic-light dashboard. */
+const DIFFERENT: { t: string; d: string; sources: string[] }[] = [
+  {
+    t: 'Trust the test, not the feeling.',
+    d: 'If you rate yourself alert but your reaction test is slow, Space Vigil says so and tells you to hold critical tasks. In ISS astronauts, self-rated alertness showed little link with measured performance. Try the scenario "Feels fine, reacts slow" in Settings.',
+    sources: ['dev-2024'],
+  },
+  {
+    t: 'The delay changes the advice.',
+    d: 'On a station the answer is "call the flight surgeon now". On a Mars link it is "start the checklist, send the report and act without waiting", with the round trip worked out from the link you have selected.',
+    sources: ['comm-delay', 'ames-delay-review'],
+  },
+  {
+    t: 'Habits, not readings.',
+    d: 'Mission patches reward measuring every day and never the value measured, so nobody gains anything by under-reporting.',
+    sources: [],
+  },
 ];
 
 /** From the shirt to the screen: main's five-step data path. */
@@ -44,14 +64,27 @@ export function Learn({ go }: { go: (v: View) => void }) {
       <section className="panel learn-section" aria-labelledby="learn-why">
         <h2 id="learn-why">Why this exists</h2>
         <p>
-          Picture being six months from home with a headache that will not go away. On Earth you would call a doctor. Halfway to Mars, a
-          message takes up to 24 minutes to arrive and another 24 for the answer. Nobody is going to hold your hand through that in real time.
+          Picture being six months from home with a headache that will not go away. On Earth you would call a doctor. On a Mars mission, a
+          message can take up to 24 minutes to arrive and another 24 for the answer. Nobody is going to hold your hand through that in real time.
         </p>
         <p>
           So the crew has to be able to look at their own numbers, understand them, and know what to do next, on their own, with the ground
           confirming later. Space Vigil is that first look. It is not a doctor and does not pretend to be one. It is the thing that says
           "this is normal for you", or "this is not, and here is what to do about it".
         </p>
+      </section>
+
+      <section className="panel learn-section" aria-labelledby="learn-different">
+        <h2 id="learn-different">What makes it different</h2>
+        <ul className="learn-list">
+          {DIFFERENT.map((x) => (
+            <li key={x.t}>
+              <h3>{x.t}</h3>
+              <p>{x.d}</p>
+              {x.sources.length > 0 && <SourceLinks ids={x.sources} compact />}
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="panel learn-section" aria-labelledby="learn-hazards">
@@ -90,6 +123,24 @@ export function Learn({ go }: { go: (v: View) => void }) {
         </ol>
         <p className="learn-note">In this prototype the shirt data is simulated, and labelled as such (the "from wearable" chips in the check-in). The shape is the same.</p>
         <SourceLinks ids={['bio-monitor-csa', 'bio-monitor-ntrs', 'hexoskin-gateway']} />
+      </section>
+
+      <section className="panel learn-section" aria-labelledby="learn-nasa">
+        <h2 id="learn-nasa">Where NASA data enters Space Vigil</h2>
+        <p className="learn-note">
+          The crew in this prototype is simulated, so here is every place a NASA number or document shapes the tool, and how it is used.
+        </p>
+        <ul className="learn-list">
+          {NASA_DATA_ROWS.map((r) => (
+            <li key={r.title}>
+              <h3>{r.title}</h3>
+              <p>{r.value}</p>
+              <p><b>Used for:</b> {r.usedFor}</p>
+              <SourceLinks ids={r.sources} compact />
+            </li>
+          ))}
+        </ul>
+        <p className="learn-note">{NASA_DATA_LIMIT}</p>
       </section>
 
       <section className="panel learn-section" aria-labelledby="learn-decides">
@@ -161,7 +212,7 @@ export function Learn({ go }: { go: (v: View) => void }) {
         <p>
           We started with people, not data. Three of them: the astronaut, who is busy and tired and sometimes tempted to shrug off a
           symptom; the crew medical officer, a crewmate with extra training but not a doctor; and the flight surgeon on Earth, who reads
-          everything hours late. Then we wrote the problem in one sentence: astronauts on long missions need a quick way to understand their
+          everything minutes late at best. Then we wrote the problem in one sentence: astronauts on long missions need a quick way to understand their
           own health and know what to do about it, because they cannot always reach doctors in time.
         </p>
         <p>

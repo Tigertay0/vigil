@@ -97,7 +97,7 @@ export function Today({ go }: { go: Go }) {
   const done = tasks.filter((t) => routineDone[`${selected.id}:${settings.currentDay}:${t.id}`]).length;
   const days = settings.currentDay;
   const meta = `${selected.name}, ${selected.callsign} · ${selected.agency} · ${days} ${days === 1 ? 'day' : 'days'} in space`;
-  const surgeonNote = ev.notifySurgeon ? `The flight surgeon should hear about this. One-way delay to the ground: ${env.commDelay}.` : null;
+  const surgeonNote = ev.notifySurgeon ? 'The flight surgeon should hear about this. Open Alerts to send the report and see what the delay means on your link.' : null;
   const others = evals.filter((e) => e.crew.id !== selected.id);
   const groups = useMemo(() => tileGroups(ev.byIndicator), [ev.byIndicator]);
   const refreshed = useRefreshPlacement(sweep, groups);

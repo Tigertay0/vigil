@@ -1,7 +1,8 @@
 # Sources
 
-Everything Space Vigil shows as a number or a claim traces to one of these. Agency documents and peer-reviewed
-papers only. The same list is in `src/data/sources.ts` and in the app under Learn.
+Everything Space Vigil shows as a number or a claim traces to one of these: agency documents and peer-reviewed
+papers first, plus a few clinical reference pages (Mayo Clinic, Cleveland Clinic, American Heart Association) and
+the Hexoskin announcement, each named by organisation. The same list is in `src/data/sources.ts` and in the app under Learn.
 
 ## NASA
 
@@ -21,15 +22,26 @@ The challenge's official Resources tab (posted 13 November) lists five links; al
   Sleep, cognition, team cohesion and behavioral health research for long missions.
 - **NASA Office of the Chief Health and Medical Officer, Radiation Protection Technical Brief (NASA-STD-3001).**
   https://www.nasa.gov/wp-content/uploads/2023/03/radiation-protection-technical-brief-ochmo.pdf
-  Career effective-dose limit of 600 mSv; 250 mSv short-term limit for a solar particle event.
+  Career effective-dose limit of 600 mSv; crews must be protected from the design-reference solar particle event to under a 250 mSv effective dose ([V1 4030], [V1 4031]).
 - **NASA NTRS, Reaction Self Test (ISS fatigue monitoring).** https://ntrs.nasa.gov/citations/20090029851
   ISS crews run a brief reaction-time test on a laptop, especially around sleep shifts.
-- **NASA NTRS, ISS exercise countermeasures: assigned versus loaded time.** https://ntrs.nasa.gov/citations/20110015001
+- **NASA NTRS, Inadequate Loading Stimulus on ISS Results in Bone and Muscle Loss.** https://ntrs.nasa.gov/citations/20110015001
   About 146.8 min/day of exercise assigned on ISS schedules.
-- **NASA Ames (NTRS), communication delays for lunar and Mars missions.** https://ntrs.nasa.gov/citations/20240006867
-  Moon: about 1.3 s light time, roughly 3-10 s end to end with relays and processing. Mars: 4-24 min one way.
-- **NASA Open Science Data Repository.** https://osdr.nasa.gov/
-  Open biomedical spaceflight datasets, including the Inspiration4 human datasets (OSD-569, 570, 571, 575).
+- **NASA Goddard, Space Communications: 7 Things You Need to Know.**
+  https://www.nasa.gov/centers-and-facilities/goddard/space-communications-7-things-you-need-to-know/
+  Mars: about 4 min one way at closest approach, about 24 min at greatest distance. The Moon's light time (about
+  1.3 s) is simple physics, not from this page; the 10 s Moon preset in the app is our own allowance for relays and
+  processing.
+- **NASA NTRS (Ames), The Impact of Delayed Communications on NASA's Human-Systems Operations.**
+  https://ntrs.nasa.gov/citations/20240006867
+  As delays grow, some responsibility shifts from ground experts to the onboard crew.
+- **NASA Open Science Data Repository, OSD-575, SpaceX Inspiration4 Blood Serum Metabolic Panel.**
+  https://osdr.nasa.gov/bio/repo/data/studies/OSD-575 (DOI 10.26030/mc5d-p710)
+  12 pre-flight serum glucose values from 4 crew (file LSDS-8_Comprehensive_Metabolic_Panel_CMP): range 56-100
+  mg/dL, mean 75, SD 11. Fasting status is not documented, and the post-flight R+45 values (36-44 mg/dL) look
+  implausible, so this is used only as a sanity check on the simulator's fasting-glucose set-points (84-92 mg/dL),
+  never to set a crew parameter. OSDR holds no heart-rate, blood-pressure, temperature, sleep or body-mass tables
+  for these indicators that we could find.
 - **NASA Space Apps Challenge 2026, Create Health Monitoring Software for Astronauts on Space Missions.**
   https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/
 
@@ -50,6 +62,17 @@ The challenge's official Resources tab (posted 13 November) lists five links; al
   the Mars Science Laboratory. https://doi.org/10.1126/science.1235989. About 1.84 mSv/day during cruise.
 - **Hassler et al., Science 343 (2014).** Mars' surface radiation environment measured with the Curiosity
   rover. https://doi.org/10.1126/science.1244797. About 0.64 mSv/day on the surface.
+- **NASA Planetary Data System (Planetary Plasma Interactions node), MSL/RAD RDR cruise data,
+  MSL-M-RAD-3-RDR-V1.0.** https://pds-ppi.igpp.ucla.edu/data/MSL-M-RAD-3-RDR-V1.0/DATA/CRUISE/ (DOI
+  10.17189/1519761). The solar particle event scenario replays 7 to 10 March 2012. Daily silicon-detector dose
+  (`DOSIMETRY_TOTAL_DOSE_B`, time-weighted UTC days) was computed from the 218 daily cruise files: 1395, 9805, 3016
+  and 799 microgray per day. The archive has no dose-equivalent column, so dose equivalent is estimated with
+  published conversion factors (x1.38 silicon to water, x3.82 galactic quality factor, quality factor 1 for the
+  event excess; Guo et al. 2015 and 2021): 3.2, 14.8, 5.4 and 2.4 mSv/day. The same method gives a cruise mean of
+  1.84 mSv/day and event totals within 5% of the published ones (March 19.1 against 19.5 mSv). The dose was
+  measured inside the Mars-bound spacecraft, not a crewed vehicle. Citation as asked by the archive: J. Peterson,
+  S. Rafkin, C. Zeitlin, B. Ehresmann, E. Weigle, S. Jeffers and D.M. Hassler, MSL Mars Radiation Assessment
+  Detector RDR V1.0, NASA Planetary Data System, 2013.
 - **Shavers et al., Zeitschrift fuer Medizinische Physik 34 (2024).** Space agency-specific standards for crew
   dose and risk assessment of ionising radiation exposures for the ISS.
   https://doi.org/10.1016/j.zemedi.2023.06.005. ISS effective dose about 0.2-0.5 mSv or more per day.
@@ -84,6 +107,12 @@ The challenge's official Resources tab (posted 13 November) lists five links; al
 - **CDC, definition of fever.**
   https://www.cdc.gov/quarantine/air/reporting-deaths-illness/definitions-symptoms-reportable-illnesses.html
   Measured temperature of 100.4 °F (38 °C) or higher.
+- **American Heart Association, Low blood pressure: when blood pressure is too low.**
+  https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure/low-blood-pressure-when-blood-pressure-is-too-low
+  Hypotension is blood pressure below 90/60 mm Hg; usually not harmful unless there are symptoms.
+- **Stahn et al., Scientific Reports 7 (2017), Increased core body temperature in astronauts during long-duration
+  space missions.** https://doi.org/10.1038/s41598-017-15560-w
+  Resting core temperature about 1 °C higher on the ISS than before flight. Cited as a caution on the fixed fever line.
 - **Cleveland Clinic, Vital signs.** https://my.clevelandclinic.org/health/articles/10881-vital-signs
   Typical adult resting breathing rate 12-20 per minute.
 - **Mayo Clinic, Hypoxemia.** https://www.mayoclinic.org/symptoms/hypoxemia/basics/definition/sym-20050930
@@ -93,8 +122,10 @@ The challenge's official Resources tab (posted 13 November) lists five links; al
 
 Stated in the alert text whenever they apply:
 
-- Body mass 5% below the pre-flight median is flagged as Watch.
-- Mission dose at 50% and 80% of the 600 mSv career limit is shown as Watch and Act now.
-- A robust z-score of 3 or more against the personal baseline (median and MAD) is flagged as Watch.
-- Three-day persistence windows for stage 1 blood pressure, prediabetes-range glucose, mood, stress and
-  symptoms.
+- Body mass 5% below the pre-flight median is flagged as Keep an eye on it.
+- Mission dose at 50% and 80% of the 600 mSv career limit is shown as Keep an eye on it and Needs action.
+- A robust z-score of 3 or more against the personal baseline (median and MAD) is flagged as Keep an eye on it.
+- Three-reading persistence windows for stage 1 blood pressure, prediabetes-range glucose, mood, stress and
+  symptoms. They count the last readings in a row, so a missed check-in does not reset the run. Mood also fires
+  after two low readings when today's rating is 1 out of 5.
+- The low blood pressure check looks at the systolic number only (under 90 mmHg).

@@ -2,8 +2,8 @@ import type { Environment } from '../lib/types';
 
 /**
  * One-way signal delay presets for the crew <-> ground comm link.
- * Lunar and Mars figures are the ones quoted by the `comm-delay` source
- * (Moon: about 1.3 s light time, 3-10 s end to end with relays and processing; Mars: 4-24 min one-way).
+ * Mars figures are the ones quoted by the `comm-delay` source (4-24 min one way). The Moon's light time is about 1.3 s;
+ * the 10 s preset is an allowance for relays and processing, an assumption rather than a published figure.
  */
 export type LinkPresetId = 'leo' | 'moon' | 'marsNear' | 'marsFar';
 
@@ -24,19 +24,19 @@ export const LINK_PRESETS: Record<LinkPresetId, LinkPreset> = {
   moon: {
     label: 'Moon (up to 10 s with relays)',
     oneWaySeconds: 10,
-    note: 'Light time is about 1.3 s; NASA Ames quotes 3-10 s end to end once relays and ground processing are included. Upper end used.',
-    sources: ['comm-delay'],
+    note: 'Light time is about 1.3 s (the Moon is roughly 384,000 km away). The 10 s used here is an allowance for relays and ground processing, an assumption for the demo rather than a published figure.',
+    sources: [],
   },
   marsNear: {
     label: 'Mars, closest (4 min)',
     oneWaySeconds: 4 * 60,
-    note: 'Lower end of the "4-24 min one-way for Mars" quoted by NASA Ames.',
+    note: 'About 4 min one way at closest approach, as quoted by NASA Goddard.',
     sources: ['comm-delay'],
   },
   marsFar: {
     label: 'Mars, farthest (24 min)',
     oneWaySeconds: 24 * 60,
-    note: 'Upper end of the "4-24 min one-way for Mars" quoted by NASA Ames.',
+    note: 'About 24 min one way at greatest distance, as quoted by NASA Goddard.',
     sources: ['comm-delay'],
   },
 };
