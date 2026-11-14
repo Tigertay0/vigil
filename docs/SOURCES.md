@@ -129,3 +129,11 @@ Stated in the alert text whenever they apply:
   symptoms. They count the last readings in a row, so a missed check-in does not reset the run. Mood also fires
   after two low readings when today's rating is 1 out of 5.
 - The low blood pressure check looks at the systolic number only (under 90 mmHg).
+
+## Images
+
+- **App backdrop: NASA astronaut photograph ISS074-E-521637** (Milky Way over Earth's airglow, taken 13 April 2026 from the
+  ISS), NASA Gateway to Astronaut Photography of Earth.
+  https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=ISS074&roll=E&frame=521637. NASA content is generally not
+  subject to copyright in the United States (NASA Media Usage Guidelines); it is used here with NASA acknowledged as
+  the source and no implied endorsement. The photo is identified in the project's own `src/backdrop.css`.

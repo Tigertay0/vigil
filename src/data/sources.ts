@@ -111,6 +111,13 @@ export const SOURCES: Source[] = [
     note: 'Hypotension is blood pressure below 90/60 mm Hg; usually not harmful unless there are other symptoms.',
   },
   {
+    id: 'iss-backdrop',
+    org: 'NASA Gateway to Astronaut Photography of Earth',
+    title: 'ISS074-E-521637, the photograph used as the app backdrop',
+    url: 'https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=ISS074&roll=E&frame=521637',
+    note: 'Astronaut photograph taken from the ISS on 13 April 2026. NASA content is generally not subject to copyright in the United States; NASA is acknowledged as the source and no endorsement is implied.',
+  },
+  {
     id: 'stahn-2017',
     org: 'Stahn et al., Scientific Reports 7 (2017)',
     title: 'Increased core body temperature in astronauts during long-duration space missions',

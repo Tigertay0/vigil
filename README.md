@@ -219,3 +219,9 @@ Space Vigil is a decision-support prototype, not a medical device. It does not d
 general adult references; operational limits on a real mission are set by the flight surgeon. The 60-second
 quick version of the reaction test is a shortened form of the 3-minute PVT-B; neither version has been checked against
 laboratory equipment.
+
+## Credits
+
+The app backdrop is NASA astronaut photograph ISS074-E-521637 (NASA Gateway to Astronaut Photography of Earth). NASA is
+acknowledged as the source and no endorsement is implied. All other sources are listed in
+[docs/SOURCES.md](docs/SOURCES.md).

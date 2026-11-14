@@ -154,7 +154,8 @@ Full list with links: docs/SOURCES.md.
 Software and assets: React, React DOM, Recharts, Vite, vite-plugin-pwa, TypeScript, vitest and oxlint (open
 source, MIT or similar licences); Space Grotesk and IBM Plex Mono fonts via Fontsource (SIL Open Font Licence);
 PptxGenJS for the slide deck; the Slidesgo "Earth's Atmosphere Class" look as design inspiration for the deck;
-the Microsoft neural voice used for the video narration. **[Team: credit the source of public/space.jpg (the app
-backdrop) here or replace it, and check docs/logo-sheet.png.]**
+the Microsoft neural voice used for the video narration. App backdrop: NASA astronaut photograph ISS074-E-521637
+(NASA Gateway to Astronaut Photography of Earth, taken 13 April 2026), used with NASA acknowledged as the source and
+no endorsement implied. **[Team: check docs/logo-sheet.png.]**
 
 All crew data in the demo is simulated.
