@@ -18,4 +18,4 @@ What makes it credible. Every threshold is cited inside the alert and listed in 
 
 What it is not. Not a medical device. It never diagnoses. It supports the crew's decision and points to the flight surgeon when a rule says so.
 
-Where it lives. Code: https://github.com/Tigertay0/vigil. The deck, video script, submission draft and pitch notes are in the docs folder. The older live demo is at https://victor-andiazabal.github.io/victor-andiazabal/ (from the team's earlier repository); this repository builds its own GitHub Pages site with .github/workflows/pages.yml. To run it on your own computer, see the Try it section of README.md (double-click start-windows.bat or start-mac.command).
+Where it lives. Code: https://github.com/Tigertay0/vigil. Live app: https://tigertay0.github.io/vigil/ (built by .github/workflows/pages.yml on every push to main). The deck, video script, submission draft and pitch notes are in the docs folder. To run it on your own computer, see the Try it section of README.md (double-click start-windows.bat or start-mac.command).

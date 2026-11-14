@@ -8,7 +8,7 @@ Built for the 2026 NASA Space Apps Challenge, challenge
 [Create Health Monitoring Software for Astronauts on Space Missions](https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/).
 Team: Les Tigres de Bethesda.
 
-**Live demo:** https://victor-andiazabal.github.io/victor-andiazabal/
+**Live demo:** https://tigertay0.github.io/vigil/
 
 ## Try it
 
@@ -16,7 +16,7 @@ Three ways, easiest first. All crew data in the app is simulated.
 
 ### Option 1: open it in your browser (nothing to install)
 
-Go to https://victor-andiazabal.github.io/victor-andiazabal/ on any phone, tablet or computer.
+Go to https://tigertay0.github.io/vigil/ on any phone, tablet or computer.
 
 A 7-step tutorial opens on your first visit and points at the real controls. To replay it, press the **?**
 button in the top bar, or use Settings, then Replay tutorial.

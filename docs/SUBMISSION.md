@@ -33,14 +33,12 @@ The rules ask for either a 7-slide deck or a video of 30 seconds or less, so sub
 reaction test "catches" sleep loss, which the corrected deck and app avoid (see docs/VIDEO_SCRIPT.md). Re-record
 it before using it, and disclose the synthetic voice if you do.
 
-The link works only after the `competition-polish` branch is merged into `main`. Open it in a private window
-before submitting to check that no login is needed, or upload the PDF to Google Drive with public access and use
-that link instead.
+The link is live (checked on 14 November 2026). Open it in a private window before submitting to confirm that no
+login is needed, or upload the PDF to Google Drive with public access and use that link instead.
 
 ## Link to final project
 
-Live app: https://tigertay0.github.io/vigil/ (after GitHub Pages is switched on for the repository; fallback:
-https://victor-andiazabal.github.io/victor-andiazabal/)
+Live app: https://tigertay0.github.io/vigil/
 Source: https://github.com/Tigertay0/vigil
 
 ## Detailed project description
