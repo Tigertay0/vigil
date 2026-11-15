@@ -65,9 +65,10 @@
 .strip-tip {
   position: absolute; left: 0; right: 0; bottom: calc(100% + 4px); z-index: 3;
   width: max-content; max-width: 100%;
-  padding: 6px 10px; border-radius: var(--r-control);
-  background: var(--surface-3); border: 1px solid var(--line-strong); box-shadow: var(--shadow-overlay);
-  font-size: 13px; line-height: 1.4; color: var(--text); pointer-events: none;
+  padding: 8px 12px; border-radius: var(--r-control);
+  /* Solid, not translucent: the tile's text and gauge must not show through it. */
+  background: var(--bg); border: 1px solid var(--line-strong); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  font-size: 13px; line-height: 1.4; color: var(--text); pointer-events: none; overflow-wrap: anywhere;
 }
 
 /* Number field (C3): label row, 56px field between two 48px square steppers, band, messages. */

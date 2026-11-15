@@ -12,10 +12,9 @@
 .ind-explain { position: relative; z-index: 2; font-size: 13px; line-height: 1.45; color: var(--text-2); padding: 6px 8px; border-radius: 8px; background: var(--surface-3); }
 .ind-explain b { color: var(--text); font-weight: 500; }
 .ind-explain-ref { display: block; margin-top: 4px; color: var(--text-muted); }
-.legend-line { display: inline-flex; align-items: center; gap: 6px; margin-right: 10px; }
-.legend-line .dot { margin-left: 6px; }
-.legend-line .dot:first-child { margin-left: 0; }
-.mission-strip { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 var(--s-5); }
+.legend-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-6); }
+.legend-item { display: inline-flex; align-items: center; gap: var(--s-2); white-space: nowrap; }
+.mission-strip { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0 0 var(--s-8); }
 .mission-strip .pill { gap: 8px; padding: 5px 12px; font-size: 13px; }
 .mission-strip .pill .k { color: var(--text-muted); font-weight: 400; }
 .mission-strip .pill.sim { border-style: dashed; }

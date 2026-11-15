@@ -131,8 +131,12 @@ export function Today({ go }: { go: Go }) {
               </h2>
               {gi === 0 && (
                 <span className="section-hint">
-                  <span className="legend-line"><span className="dot green" aria-hidden="true" /> normal for you <span className="dot amber" aria-hidden="true" /> keep an eye on it <span className="dot red" aria-hidden="true" /> do something now</span>
-                  Tap a tile for its trend, the day bars for the last 14 days, or <b>i</b> for what it measures.
+                  <span className="legend-line">
+                    <span className="legend-item"><span className="dot green" aria-hidden="true" />normal for you</span>
+                    <span className="legend-item"><span className="dot amber" aria-hidden="true" />keep an eye on it</span>
+                    <span className="legend-item"><span className="dot red" aria-hidden="true" />do something now</span>
+                  </span>
+                  <span>Tap a tile for its trend, the day bars for the last 14 days, or <b>i</b> for what it measures.</span>
                 </span>
               )}
             </div>

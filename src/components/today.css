@@ -2,9 +2,9 @@
 
 .today-top { display: grid; grid-template-columns: 1.6fr 1fr; gap: var(--s-6); margin-bottom: var(--s-8); }
 .today-section { margin-bottom: var(--s-8); }
-.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; margin-bottom: var(--s-4); }
+.section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-3) var(--s-8); flex-wrap: wrap; margin-bottom: var(--s-6); }
 .section-head h2 { margin: 0; }
-.section-hint { font-size: 14px; line-height: 1.45; color: var(--text-2); }
+.section-hint { display: grid; gap: var(--s-2); max-width: 64ch; font-size: 14px; line-height: 1.5; color: var(--text-2); }
 
 /* Status panel: ring | word + reason + meta, then the one action. */
 .status-panel {
@@ -150,8 +150,11 @@
 @media (max-width: 639px) {
   .ind-grid { gap: var(--s-2); }
   .ind-tile { padding: var(--s-3) 10px; }
-  .ind-head { gap: var(--s-1); }
-  .ind-head .pill { gap: 3px; padding: 2px 6px; border-width: 0; }
+  /* The status pill and the label do not fit side by side in a half-width tile: the pill gets its own line and the label sits
+     beside the info button below it, instead of shrinking to one letter. */
+  .ind-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-1); }
+  .ind-head .pill { order: -1; grid-column: 1 / -1; justify-self: start; gap: 3px; padding: 2px 6px; border-width: 0; }
+  .ind-label { white-space: normal; line-height: 18px; }
   .ind-head .pill .dot { width: 6px; height: 6px; }
 }
 
