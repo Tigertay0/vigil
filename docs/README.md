@@ -15,7 +15,7 @@ Everything that is not code. Grouped by what you want to do.
 
 | File | What it is |
 | --- | --- |
-| [VIGIL-30s.mp4](VIGIL-30s.mp4) | The 28-second demo video (AI-generated voice, disclosed on the end card and in the file's metadata) |
+| [VIGIL-30s.mp4](VIGIL-30s.mp4) | The 29-second demo video (the team's own voice-over, screen recordings of the app) |
 | [VIDEO_SCRIPT.md](VIDEO_SCRIPT.md) | The video's lines, shots and timings |
 | [VIGIL-demo.pdf](VIGIL-demo.pdf), [VIGIL-demo.pptx](VIGIL-demo.pptx) | The 7-slide demo deck (PDF to view, PPTX to edit; the PPTX uses the Bebas Neue and Barlow fonts) |
 | [DEMO_SLIDES.md](DEMO_SLIDES.md) | The deck's outline, slide by slide |

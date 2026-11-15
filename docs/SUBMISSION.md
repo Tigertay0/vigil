@@ -28,10 +28,10 @@ transit, rover and base settings. All crew data in the demo is simulated.
 
 Either is valid; pick one, not both. The rules allow a 7-slide deck or a video of 30 seconds or less.
 
-Video (28 s, captions, ElevenLabs synthetic voice): upload `docs/VIGIL-30s.mp4` to YouTube as **Unlisted** and
-paste the watch link. In the YouTube description write: "Voice-over: AI-generated synthetic voice (ElevenLabs
-text-to-speech). Screen recordings of the Space Vigil app; all crew data is simulated." The same note is inside the
-file's metadata and on its end card. Recommended: a moving demo scores better on Presentation.
+Video (29 s, captions, the team's own voice-over): upload `docs/VIGIL-30s.mp4` to YouTube as **Unlisted** and
+paste the watch link. In the YouTube description write: "Voice-over recorded by the team. Screen recordings of the
+Space Vigil app; all crew data is simulated." The same note is inside the file's metadata and on its end card.
+Recommended: a moving demo scores better on Presentation.
 
 Slides (7 slides, PDF): https://github.com/Tigertay0/vigil/blob/main/docs/VIGIL-demo.pdf
 
@@ -147,8 +147,8 @@ Full list with links: docs/SOURCES.md.
 
 Software and assets: React, React DOM, Recharts, Vite, vite-plugin-pwa, TypeScript, vitest and oxlint (open
 source, MIT or similar licences); Space Grotesk and IBM Plex Mono fonts via Fontsource (SIL Open Font Licence);
-PptxGenJS for the slide deck; the Slidesgo "Earth's Atmosphere Class" look as design inspiration for the deck;
-the Microsoft neural voice used for the video narration. App backdrop: NASA astronaut photograph ISS074-E-521637
+PptxGenJS for the slide deck; the Slidesgo "Earth's Atmosphere Class" look as design inspiration for the deck.
+App backdrop: NASA astronaut photograph ISS074-E-521637
 (NASA Gateway to Astronaut Photography of Earth, taken 13 April 2026), used with NASA acknowledged as the source and
 no endorsement implied. **[Team: check docs/logo-sheet.png.]**
 
