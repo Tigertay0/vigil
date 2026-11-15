@@ -14,7 +14,7 @@ The screens. Today screen with the day's status, the single next action and one 
 
 The demo. The crew is simulated and labelled as such everywhere. Five scenarios make the rules visibly fire: a quiet nominal mission, a solar storm that turns the whole crew red (it replays a real 2012 NASA measurement from the Mars cruise), a week of sleep debt that slows the Commander's reactions, an early infection that flags Flight Engineer 1 with a fever, and "Feels fine, reacts slow", where Flight Engineer 2 rates herself alert while her reaction test is slow and the app says to trust the test.
 
-What makes it credible. Every threshold is cited inside the alert and listed in the app. No real astronaut records are used. It runs offline, installs like an app on a phone or tablet, keeps data on the device, and has 242 automated tests that check every one of its 37 alert rules at its boundary.
+What makes it credible. Every threshold is cited inside the alert and listed in the app. No real astronaut records are used. It runs offline, installs like an app on a phone or tablet, keeps data on the device, and has 249 automated tests that check every one of its 37 alert rules at its boundary.
 
 What it is not. Not a medical device. It never diagnoses. It supports the crew's decision and points to the flight surgeon when a rule says so.
 

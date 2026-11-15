@@ -57,7 +57,7 @@ sleep from one garment over Bluetooth. Cuff, glucose meter and dosimeter reading
 
 - Task tests: "you just got an alert; find out why and what to do" on desktop and phone.
 - Keyboard-only navigation, dark and light themes, offline reload.
-- A rule-by-rule test suite (242 tests across 16 files) that checks every published cut-off, the scenarios and the screen logic.
+- A rule-by-rule test suite (249 tests across 17 files) that checks every published cut-off, the scenarios and the screen logic.
 - Each round changed the wording. Status labels went from "Nominal / Watch / Act now" to "Normal for you /
   Keep an eye on it / Needs action", and every tile gained a plain sentence about the person's own baseline.
 

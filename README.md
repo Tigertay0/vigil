@@ -10,6 +10,20 @@ Team: Les Tigres de Bethesda.
 
 **Live demo:** https://tigertay0.github.io/vigil/
 
+## Where everything is
+
+| I want to... | Go to |
+| --- | --- |
+| Open the app | https://tigertay0.github.io/vigil/ |
+| Read the one-page summary | [READ THIS SUMMARY](READ%20THIS%20SUMMARY) |
+| Watch the demo | [docs/VIGIL-30s.mp4](docs/VIGIL-30s.mp4) (video) or [docs/VIGIL-demo.pdf](docs/VIGIL-demo.pdf) (7 slides) |
+| Read the project submission text | [docs/SUBMISSION.md](docs/SUBMISSION.md) |
+| See where each number comes from and what was tested | [docs/SOURCES.md](docs/SOURCES.md) and [docs/VALIDATION.md](docs/VALIDATION.md) |
+| See the likely judge questions | [docs/PITCH_QA.md](docs/PITCH_QA.md) |
+| Read the code | [src/](src/), with a map in [src/README.md](src/README.md) |
+| Run it or the tests | [Try it](#try-it) and [Development](#development) below |
+| Find any other file | the folder map under [Layout](#layout), and the index in [docs/README.md](docs/README.md) |
+
 ## Try it
 
 Three ways, easiest first. All crew data in the app is simulated.
@@ -201,16 +215,24 @@ React 19, TypeScript, Vite (with vite-plugin-pwa for the offline cache), Rechart
 ## Layout
 
 ```
-vigil/
-  start-windows.bat, start-mac.command, start-mac-linux.sh   one-click launchers
-  src/data/        indicators, crew roster, scenarios, countermeasure checklists, sources, body systems,
-                   link delay presets, daily routine
-  src/lib/         simulator, baseline statistics, rule engine, pulse estimation, storage, CSV, body map
-                   status, comm link queue, badges
-  src/components/  Today, body map, check-in, reaction test, trends, alerts, comm link, routine,
-                   badges, learn, settings
-  src/lib/__tests__ unit tests for the statistics, simulator, rules and screen logic
-  docs/            sources, design process, demo deck (pptx), slide outline, video script, video, submission draft, pitch notes
+.
+├── README.md                  this file: what it is, how to run it, where everything is
+├── READ THIS SUMMARY          one-page plain-language summary
+├── src/                       the app (map in src/README.md)
+│   ├── components/            one file per screen (Today, Alerts, Body map, Check-in, Reaction test, Trends,
+│   │                          Learn, Settings, ...), each with its own CSS file beside it
+│   ├── data/                  fixed content: indicators, crew, sources, NASA data table, the real radiation
+│   │                          event, link delays, checklists, body systems, daily routine
+│   ├── lib/                   logic with no screens: alert rules, simulator, baselines, delay-aware guidance,
+│   │                          reaction-test scoring, camera pulse, CSV, comm link, badges
+│   │   └── __tests__/         the unit tests (run with npm test)
+│   └── state/                 the app's saved state
+├── public/                    icons and the NASA backdrop photo
+├── docs/                      everything for judges and the submission (index in docs/README.md)
+├── .github/workflows/         pages.yml builds and publishes the live site on every push to main
+├── .design/                   design working notes from building the interface (not needed to run the app)
+├── start-windows.bat, start-mac.command, start-mac-linux.sh    one-click launchers
+└── package.json, vite.config.ts, tsconfig*.json, .oxlintrc.json, index.html    build, test and lint settings
 ```
 
 ## Limits
