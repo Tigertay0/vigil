@@ -28,7 +28,7 @@ transit, rover and base settings. All crew data in the demo is simulated.
 
 Either is valid; pick one, not both. The rules allow a 7-slide deck or a video of 30 seconds or less.
 
-Video (26 s, captions, ElevenLabs synthetic voice): upload `docs/VIGIL-30s.mp4` to YouTube as **Unlisted** and
+Video (28 s, captions, ElevenLabs synthetic voice): upload `docs/VIGIL-30s.mp4` to YouTube as **Unlisted** and
 paste the watch link. In the YouTube description write: "Voice-over: AI-generated synthetic voice (ElevenLabs
 text-to-speech). Screen recordings of the Space Vigil app; all crew data is simulated." The same note is inside the
 file's metadata and on its end card. Recommended: a moving demo scores better on Presentation.
