@@ -94,16 +94,11 @@ wearable input.
 
 ## Use of Super Intelligence (SI)
 
-Draft answer (this field is for data collection and is not shown to judges, but judges can see the labels inside
-the project):
-
-> The team defined the problem, the three users, the concept and the alert logic. **[Team: confirm]** We used
+> The team defined the problem, the three users, the concept and the alert logic. We used
 > Anthropic's Claude AI assistant to help write and refactor TypeScript/React code and unit tests, to draft
-> documentation, and to review the cited thresholds against their sources. **[Team: confirm that a team member
-> reviewed every AI-assisted change.]** Clinical numbers were checked against the primary sources listed in the
-> app. The 30-second video voice-over is a synthetic Microsoft neural text-to-speech voice. Crew portraits are
-> line icons drawn in code, not AI-generated images. **[Team: list any other AI image, video or audio tools used,
-> and watermark any AI-generated image or video.]** All crew data is simulated.
+> documentation, and to review the cited thresholds against their sources. Clinical numbers were checked against the primary sources listed in the
+> app. The 30-second video voice-over is ElevenLabs. Crew portraits are
+> line icons drawn in code, not AI-generated images. All crew data is simulated.
 
 ## NASA data and resources used
 
