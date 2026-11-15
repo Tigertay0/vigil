@@ -26,15 +26,16 @@ transit, rover and base settings. All crew data in the demo is simulated.
 
 ## Link to project demo
 
+Either is valid; pick one, not both. The rules allow a 7-slide deck or a video of 30 seconds or less.
+
+Video (28.8 s, captions, synthetic narration, re-recorded 15 November on the final build): upload
+`docs/VIGIL-30s.mp4` to YouTube as **Unlisted** and paste the watch link. In the YouTube description write:
+"Narration is a synthetic text-to-speech voice. Crew data is simulated." Recommended: a moving demo scores
+better on Presentation.
+
 Slides (7 slides, PDF): https://github.com/Tigertay0/vigil/blob/main/docs/VIGIL-demo.pdf
 
-The rules ask for either a 7-slide deck or a video of 30 seconds or less, so submit the deck as the demo. The
-28.8-second video (docs/VIGIL-30s.mp4) is optional: its voice-over still opens with "Halfway to Mars" and says the
-reaction test "catches" sleep loss, which the corrected deck and app avoid (see docs/VIDEO_SCRIPT.md). Re-record
-it before using it, and disclose the synthetic voice if you do.
-
-The link is live (checked on 14 November 2026). Open it in a private window before submitting to confirm that no
-login is needed, or upload the PDF to Google Drive with public access and use that link instead.
+Open whichever link you use in a private browser window before submitting to confirm that no login is needed.
 
 ## Link to final project
 

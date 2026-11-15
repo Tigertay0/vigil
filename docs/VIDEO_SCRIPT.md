@@ -1,22 +1,19 @@
 # 30-second video
 
 The finished video is `VIGIL-30s.mp4` in this folder: 1280 by 720, 29 seconds, on-screen captions and a
-neural voice-over (Microsoft Andrew voice). Two voice-over lines overclaim and need the corrections below before it is submitted. If you would rather use a real voice, record the seven lines
-below over the picture in any video editor and mute the existing track.
+neural voice-over (Microsoft Andrew voice), re-recorded on 15 November on the final build with the two corrected
+lines below. The file's metadata notes that the voice is synthetic. If you would rather use a real voice, record the
+seven lines over the picture in any video editor and mute the existing track.
 
 Voice-over as recorded:
 
-1. Halfway to Mars, help from Earth is forty-eight minutes away.
+1. At Mars' farthest, help from Earth is forty-eight minutes away.
 2. Space Vigil shows each astronaut what needs attention, in one screen.
 3. Every number is judged against your own baseline and published limits.
 4. Each alert explains itself, cites its source, and says what to do.
-5. A one-minute reaction test catches sleep loss early.
+5. A one-minute reaction test can flag sleep loss early.
 6. A solar storm turns the whole crew red in one click.
 7. Try it at the link.
-
-Corrections for the next cut: line 1 overstates. The 24-minute one-way delay is the maximum, at Mars' farthest
-from Earth, not the halfway point. Say "At Mars' farthest, help from Earth is forty-eight minutes away." Line 5
-overclaims for a short unvalidated test: say "A one-minute reaction test can flag sleep loss early."
 
 Shot list and voice-over lines. Timings in seconds.
 
