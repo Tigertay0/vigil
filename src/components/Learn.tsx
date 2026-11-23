@@ -241,7 +241,7 @@ export function Learn({ go }: { go: (v: View) => void }) {
           <ul className="learn-sources">
             {SOURCES.map((s) => (
               <li key={s.id}>
-                <a href={s.url} target="_blank" rel="noreferrer">{s.title}</a>
+                <a href={s.url} target="_blank" rel="noopener noreferrer">{s.title}</a>
                 <span className="learn-org">{s.org}</span>
                 <span className="learn-note-line">{s.note}</span>
               </li>

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { COUNTERMEASURES } from '../data/countermeasures';
 import { ENVIRONMENTS } from '../data/indicators';
 import { buildReport, useComm } from '../lib/comm';
@@ -17,6 +17,8 @@ const checklistFor = (f: Finding) => (f.checklist ? COUNTERMEASURES[f.checklist]
 
 const BASIS_LABEL: Record<string, string> = { baseline: 'vs your baseline', reference: 'published range' };
 
+const COPY_LABEL_MS = 1500;
+
 export function Alerts() {
   const { selected, settings, crew, dispatch, acknowledged } = useStore();
   const ev = useMemo(() => evaluate(selected, settings), [selected, settings]);
@@ -26,7 +28,9 @@ export function Alerts() {
   const [open, setOpen] = useState<string | null>(null);
   const [watchOpen, setWatchOpen] = useState<Record<string, boolean>>({});
   const [ticked, setTicked] = useState<Record<string, boolean>>({});
-  const [copied, setCopied] = useState(false);
+  const [copyLabel, setCopyLabel] = useState('');
+  const copyTimer = useRef<number | null>(null);
+  useEffect(() => () => { if (copyTimer.current !== null) window.clearTimeout(copyTimer.current); }, []);
   const comm = useComm();
   const sendDraft = useCommSender(comm);
   const [sentAt, setSentAt] = useState<number | null>(null);
@@ -47,12 +51,15 @@ export function Alerts() {
   };
 
   const copy = async () => {
+    if (copyTimer.current !== null) window.clearTimeout(copyTimer.current);
+    copyTimer.current = null;
     try {
       await navigator.clipboard.writeText(message);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      setCopyLabel('Copied');
+      copyTimer.current = window.setTimeout(() => setCopyLabel(''), COPY_LABEL_MS);
     } catch {
-      setCopied(false);
+      // The clipboard can be blocked by permission; say so instead of looking like the button did nothing.
+      setCopyLabel('Copy blocked - select the message');
     }
   };
 
@@ -193,7 +200,7 @@ export function Alerts() {
             </p>
             <label className="sr-only" htmlFor="surgeon-message">Message to the flight surgeon</label>
             <textarea id="surgeon-message" className="input mono" readOnly rows={12} value={message} />
-            <button type="button" className="btn alert-copy" onClick={copy}>{copied ? 'Copied' : 'Copy message'}</button>
+            <button type="button" className="btn alert-copy" onClick={copy}>{copyLabel || 'Copy message'}</button>
           </div>
         </div>
       </div>

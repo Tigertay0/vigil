@@ -26,6 +26,12 @@ export function viewTitle(view: View): string {
 
 export type Theme = 'dark' | 'light';
 
+/** Options for the theme switch, which appears both in the top bar and in Settings. */
+export const THEMES: { value: Theme; label: string }[] = [
+  { value: 'dark', label: 'Dark' },
+  { value: 'light', label: 'Light' },
+];
+
 /** A stored theme value, or dark when it is missing or not one we know. */
 export function parseTheme(stored: string | null): Theme {
   return stored === 'light' || stored === 'dark' ? stored : 'dark';

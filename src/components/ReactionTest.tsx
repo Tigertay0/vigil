@@ -222,6 +222,8 @@ export function ReactionTest({ go }: { go: (v: View) => void }) {
             tabIndex={0}
             aria-label={`Reaction test area. ${copy.word}`}
             onPointerDown={(e) => { e.preventDefault(); if (running) respond(); }}
+            // Space is already handled for the whole screen by the window listener; role="button" promises Enter too.
+            onKeyDown={(e) => { if (e.key === 'Enter' && running) { e.preventDefault(); respond(); } }}
           >
             <span className="pvt-word">{copy.word}</span>
             <span className="pvt-readout mono">{copy.readout}</span>

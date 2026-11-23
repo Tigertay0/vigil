@@ -33,6 +33,13 @@ describe('CSV import', () => {
     expect(records[0].record.values).toEqual({ pvtRt: 262, pvtLapses: 1 });
   });
 
+  it('skips rows without a real mission day instead of importing them as day 0', () => {
+    const csv = ['crew,day,source,hr', 'cdr,,manual,64', 'cdr,0,manual,65', 'cdr,-3,manual,66', 'cdr,7,manual,67'].join('\n');
+    const { records, skipped } = parseCsv(csv, ['cdr']);
+    expect(records.map((r) => r.record.day)).toEqual([7]);
+    expect(skipped).toBe(3);
+  });
+
   it('ignores unknown columns and empty files', () => {
     expect(parseCsv('', ['cdr']).records).toHaveLength(0);
     const { records } = parseCsv('crew,day,foo,hr\ncdr,1,bar,70', ['cdr']);

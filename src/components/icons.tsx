@@ -68,9 +68,6 @@ export const IconMore = (p: IconProps) => (
 export const IconHelp = (p: IconProps) => (
   <Svg {...p}><circle cx="10" cy="10" r="7.5" /><path d="M7.75 8a2.25 2.25 0 1 1 3.2 2.05c-.6.3-.95.8-.95 1.45v.5M10 14.5v.01" /></Svg>
 );
-export const IconClose = (p: IconProps) => (
-  <Svg {...p}><path d="M5 5l10 10M15 5L5 15" /></Svg>
-);
 export const IconChevronRight = (p: IconProps) => (
   <Svg {...p}><path d="M8 5l5 5-5 5" /></Svg>
 );

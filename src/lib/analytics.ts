@@ -70,10 +70,6 @@ export function consecutive(points: { day: number; value: number }[], pred: (v: 
   return n;
 }
 
-export function last<T>(xs: T[]): T | undefined {
-  return xs[xs.length - 1];
-}
-
 export function round(x: number, d = 1): number {
   const f = 10 ** d;
   return Math.round(x * f) / f;

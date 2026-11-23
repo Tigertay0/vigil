@@ -49,7 +49,7 @@ export function SourceLinks({ ids, compact = false }: { ids: string[]; compact?:
         Sources:{' '}
         {srcs.map((s, i) => (
           <span key={s!.id}>
-            <a href={s!.url} target="_blank" rel="noreferrer">
+            <a href={s!.url} target="_blank" rel="noopener noreferrer">
               {orgCount(s!.org) > 1 ? s!.title : s!.org}
             </a>
             {i < srcs.length - 1 ? '; ' : ''}
@@ -62,7 +62,7 @@ export function SourceLinks({ ids, compact = false }: { ids: string[]; compact?:
     <ul className="src-list">
       {srcs.map((s) => (
         <li key={s!.id}>
-          <a href={s!.url} target="_blank" rel="noreferrer">
+          <a href={s!.url} target="_blank" rel="noopener noreferrer">
             {s!.title}
           </a>{' '}
           <span className="muted">({s!.org})</span>
@@ -82,9 +82,4 @@ export function Disclaimer() {
       </p>
     </div>
   );
-}
-
-export function Trend({ dir }: { dir: 'up' | 'down' | 'flat' | null }) {
-  if (!dir || dir === 'flat') return <span className="trend muted">→</span>;
-  return <span className={`trend ${dir}`}>{dir === 'up' ? '↑' : '↓'}</span>;
 }
