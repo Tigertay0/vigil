@@ -1,17 +1,12 @@
 import { useMemo, useRef, useState, type FocusEvent, type KeyboardEvent, type ReactNode } from 'react';
 import { LEVEL_LABEL } from '../lib/format';
 import { evaluate } from '../lib/rules';
-import type { Theme } from '../lib/views';
+import { THEMES, type Theme } from '../lib/views';
 import { useStore } from '../state/store';
 import { Segmented } from './controls/Segmented';
 import { IconCommander, IconEva, IconHelp, IconMedic, IconScience, Logo } from './icons';
 
 export type { Theme } from '../lib/views';
-
-const THEMES = [
-  { value: 'dark', label: 'Dark' },
-  { value: 'light', label: 'Light' },
-];
 
 /** One role icon per crew seat; anything unknown falls back to the commander star. */
 const ROLE_ICON: Record<string, () => ReactNode> = {

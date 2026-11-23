@@ -21,13 +21,18 @@ export function CameraPulse({ onResult }: { onResult: (bpm: number) => void }) {
   const samplesRef = useRef<PpgSample[]>([]);
   const startRef = useRef(0);
 
+  const mounted = useRef(true);
+
   const stop = () => {
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     rafRef.current = null;
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
   };
-  useEffect(() => stop, []);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; stop(); };
+  }, []);
 
   const start = async () => {
     setError('');
@@ -40,9 +45,12 @@ export function CameraPulse({ onResult }: { onResult: (bpm: number) => void }) {
         audio: false,
       });
       streamRef.current = stream;
+      // Unmounted while waiting for permission: the cleanup has already run, so stop the camera here instead.
+      if (!mounted.current) { stop(); return; }
       const video = videoRef.current!;
       video.srcObject = stream;
       await video.play();
+      if (!mounted.current) { stop(); return; }
       // Try to switch the torch on for fingertip mode; not every device exposes it.
       const track = stream.getVideoTracks()[0];
       if (mode === 'finger') {
@@ -59,6 +67,16 @@ export function CameraPulse({ onResult }: { onResult: (bpm: number) => void }) {
       const w = (canvas.width = 64);
       const h = (canvas.height = 48);
       const tick = () => {
+        try {
+          captureFrame();
+        } catch (e) {
+          // Each frame runs on its own stack, so start()'s catch never sees it: without this the camera would stay on.
+          setError(e instanceof Error ? e.message : 'Capture failed');
+          setPhase('error');
+          stop();
+        }
+      };
+      const captureFrame = () => {
         const now = performance.now();
         ctx.drawImage(video, 0, 0, w, h);
         // Face: central box (forehead/cheeks). Finger: whole frame.

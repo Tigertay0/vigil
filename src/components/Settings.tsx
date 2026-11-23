@@ -3,16 +3,12 @@ import { ENVIRONMENTS, INDICATORS } from '../data/indicators';
 import { csvCell, parseCsv } from '../lib/csv';
 import { MAX_MISSION_DAY, SCENARIOS } from '../lib/simulate';
 import type { Environment, ScenarioId } from '../lib/types';
+import { THEMES } from '../lib/views';
 import { useStore } from '../state/store';
 import { Segmented } from './controls/Segmented';
 import { Check } from './ui';
 import './screens.css';
 import './settings.css';
-
-const THEMES = [
-  { value: 'dark', label: 'Dark' },
-  { value: 'light', label: 'Light' },
-];
 
 const REVOKE_DELAY_MS = 1000;
 
@@ -41,11 +37,15 @@ export function Settings({ theme, setTheme, onReplayTour }: SettingsProps) {
 
   const importCsv = async (file: File) => {
     setFileName(file.name);
-    const text = await file.text();
-    const { records, skipped } = parseCsv(text, crew.map((c) => c.id));
-    if (records.length) dispatch({ type: 'manualMany', records });
-    const future = records.filter((r) => r.record.day > settings.currentDay).length;
-    setImportMsg(`${records.length} row${records.length === 1 ? '' : 's'} imported${skipped ? `, ${skipped} skipped` : ''}.${future ? ` ${future} of them are for days after today and appear when the mission reaches them.` : ''}`);
+    try {
+      const text = await file.text();
+      const { records, skipped } = parseCsv(text, crew.map((c) => c.id));
+      if (records.length) dispatch({ type: 'manualMany', records });
+      const future = records.filter((r) => r.record.day > settings.currentDay).length;
+      setImportMsg(`${records.length} row${records.length === 1 ? '' : 's'} imported${skipped ? `, ${skipped} skipped` : ''}.${future ? ` ${future} of them are for days after today and appear when the mission reaches them.` : ''}`);
+    } catch {
+      setImportMsg('That file could not be read. Check it is a CSV in the same layout as the export.');
+    }
   };
 
   const exportJson = () => download(`vigil-day${settings.currentDay}.json`, JSON.stringify({ settings, crew, manual }, null, 2));

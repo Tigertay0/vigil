@@ -43,7 +43,8 @@ export function parseCsv(text: string, knownCrew: string[]): { records: { crewId
     head.forEach((h, i) => { row[h] = (cells[i] ?? '').trim(); });
     const day = Number(row.day);
     const crewId = row.crew;
-    if (!knownCrew.includes(crewId) || !Number.isInteger(day)) { skipped++; continue; }
+    // A blank day cell coerces to 0, so require a real mission day rather than letting it import as day 0.
+    if (!knownCrew.includes(crewId) || !Number.isInteger(day) || day < 1) { skipped++; continue; }
     const values: Partial<Record<IndicatorId, number>> = {};
     for (const h of head) {
       if (!ids.has(h) || row[h] === '') continue;
